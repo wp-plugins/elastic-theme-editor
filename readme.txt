@@ -3,7 +3,7 @@ Contributors: koopersmith
 Tags: elastic, theme, editor, framework
 Requires at least: 2.8
 Tested up to: 2.8.3
-Stable tag: 0.0.2.3
+Stable tag: 0.0.2.4
 
 An interactive theme editor for the WordPress Admin.
 
@@ -12,6 +12,9 @@ An interactive theme editor for the WordPress Admin.
 Elastic is an interactive theme editor for the WordPress Admin. Elastic breaks themes down into modules, which you can arrange in any configuration via drag-and-drop. Users can customize a theme's fonts and styles, or just rearrange its structure. Themes created with Elastic can be edited at any time—users can save their progress, or distribute their theme. Elastic builds themes with the Elastic theme framework, which allows theme developers to use the editor as a starting point for incredibly customized themes.
 
 == Changelog ==
+= 0.0.2.4 =
+* Typography loads from saved themes.
+
 = 0.0.2.3 =
 * Typography panel saves to theme. Theme not optimized for em and % font-sizes.
 

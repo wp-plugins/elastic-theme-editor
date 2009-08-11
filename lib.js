@@ -83,6 +83,7 @@ var g = {
 					return (get_index) ? index : true;
 			}
 		},
+		tabs			: {},
 		fn				: {
 			disableCanvas	: function() {
 				$('#dialog-overlay').dialog('open'); // Disable canvas
@@ -119,7 +120,66 @@ var g = {
 			bindTabSelect	: function( id, callback, tabsId ) {
 				tabsId = tabsId || '#tabs-inspector';
 				g.ir.fn.getTabAnchor( id, tabsId ).bind( $( tabsId ).tabs('option', 'event') + '.tabs', callback );
+			},
+			hideTab			: function( id, tabsId ) {
+				tabsId = tabsId || '#tabs-inspector';
+				
+				console.log('hide', id, 'in', tabsId);
+				
+				if( typeof g.ir.tabs[tabsId] === 'undefined')
+					g.ir.tabs[tabsId] = { hide : [], show : [] };
+				
+				g.ir.tabs[tabsId].hide.push( id );
+			},
+			showTab			: function( id, tabsId ) {
+				tabsId = tabsId || '#tabs-inspector';
+				
+				console.log('show', id, 'in', tabsId);
+
+				if( typeof g.ir.tabs[tabsId] === 'undefined')
+					g.ir.tabs[tabsId] = { hide : [], show : [] };
+
+				g.ir.tabs[tabsId].show.push( id );
+			},
+			updateTabs		: function( tabsId ) {
+				tabsId = tabsId || '#tabs-inspector';
+				
+				if( typeof g.ir.tabs[tabsId] === 'undefined')
+					return;
+					
+				console.log('tabs', g.ir.tabs[tabsId] );
+					
+				// Show tabs
+				$.each( g.ir.tabs[tabsId].show, function(){
+					g.ir.fn.getTabAnchor( this, tabsId ).parent().filter('.hide').removeClass('hide');
+				});
+					
+				// Hide tabs
+				var selected = false;
+				$.each( g.ir.tabs[tabsId].hide, function(){
+					selected = g.ir.fn.getTabAnchor( this, tabsId ).parent().addClass('hide').is('.ui-tabs-selected') || selected;
+					console.log('selected', selected);
+				});
+				
+				if( selected ) {
+					// If the tab we're hiding is selected, select the first visible tab.
+					var show = $(tabsId + ' > ul:first').children(':not(.hide)').eq(0).children('a').attr('href');
+					
+					console.log('show',show, 'ul', $(tabsId + ' > ul:first'), 'a', $(tabsId + ' > ul:first').children(':not(.hide)').eq(0).children('a').attr('href') );
+					
+					if( typeof show !== 'undefined') {  // If there is at least one tab, show it.
+						$( tabsId ).tabs('select', show);
+					} else {							// There are no tabs. This is bad, but hide whatever is showing.
+						$(tabsId + ' > ul:first').children('.ui-tabs-selected').each(function(){
+							$(tabsId).children('div[id="'+ $(this).children('a').attr('href').slice(1) +'"]').addClass('ui-tabs-hide');
+						}).removeClass('.ui-tabs-selected');
+					}
+				}
+				
+				// Clear arrays
+				g.ir.tabs[tabsId] = { hide : [], show : [] };
 			}
+			
 		},
 		current_panel	: { x : null, y : null },
 	},
@@ -148,94 +208,96 @@ var g = {
 		author_uri	: 'http://koopersmith.wordpress.com/',
 		tags		: 'elastic'
 	},
-	typo				: {
-		'Body Text'	: {
-			selector	: 'p',
-			css			: {
-				'font-family'	: 'Georgia, serif',
-				'font-size'		: '1em',
-				'color'			: '#000000'
-			}
-		},
-		'Blog Title'		: {
-			selector	: '#blog-title span',
-			css			: {
-				'font-family'	: 'Arial, sans-serif',
-				'font-size'		: '3em',
-				'font-weight'	: 'bold',
-				'color'			: '#000000'
-			}
-		},
-		'Blog Description'	: {
-			selector	: 'h1',
-			css			: {
-				'font-family'	: 'Georgia, serif',
-				'font-size'		: '1.4em',
-				'font-style'	: 'italic',
-				'color'			: '#666666'
-			}
-		},
-		'Post Title'		: {
-			selector	: 'h2',
-			css			: {
-				'font-family'	: 'Arial, sans-serif',
-				'font-size'		: '2.4em',
-				'font-weight'	: 'bold',
-				'color'			: '#000000'
-			}
-		},
-		'Section Title'		: {
-			selector	: 'h3',
-			css			: {
-				'font-family'	: 'Georgia, serif',
-				'font-size'		: '1.8em',
-				'font-style'	: 'italic',
-				'color'			: '#666666'
-			}
-		},
-		'Subsection Title'	: {
-			selector	: 'h4',
-			css			: {
-				'font-family'	: 'Georgia, serif',
-				'font-size'		: '1.2em',
-				'font-variant'	: 'small-caps',
-				'color'			: '#666666'
-			}
-		},
-		'Links'	: {
-			selector	: 'a',
-			css			: {
-				'font-family'	: 'Georgia, serif',
-				'font-size'		: '1.2em',
-				'font-variant'	: 'small-caps',
-				'color'			: '#666666'
-			}
-		},
-		'Lists'	: {
-			selector	: 'h4',
-			css			: {
-				'font-family'	: 'Georgia, serif',
-				'font-size'		: '1em',
-				'color'			: '#666666'
-			}
-		},
-		'Block Quote'	: {
-			selector	: 'h4',
-			css			: {
-				'font-family'	: 'Georgia, serif',
-				'font-size'		: '1em',
-				'font-style'	: 'italic',
-				'color'			: '#666666'
-			}
-		},
-		'Code'	: {
-			selector	: 'h4',
-			css			: {
-				'font-family'	: '"Courier New", serif',
-				'font-size'		: '1em',
-				'color'			: '#000000'
-			}
-		},
+	canvas				: {
+		typo		: {
+			'Body Text'	: {
+				selector	: 'p',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '1em',
+					'color'			: '#000000'
+				}
+			},
+			'Blog Title'		: {
+				selector	: '#blog-title span',
+				css			: {
+					'font-family'	: 'Arial, sans-serif',
+					'font-size'		: '3em',
+					'font-weight'	: 'bold',
+					'color'			: '#000000'
+				}
+			},
+			'Blog Description'	: {
+				selector	: 'h1',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '1.4em',
+					'font-style'	: 'italic',
+					'color'			: '#666666'
+				}
+			},
+			'Post Title'		: {
+				selector	: 'h2',
+				css			: {
+					'font-family'	: 'Arial, sans-serif',
+					'font-size'		: '2.4em',
+					'font-weight'	: 'bold',
+					'color'			: '#000000'
+				}
+			},
+			'Section Title'		: {
+				selector	: 'h3',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '1.8em',
+					'font-style'	: 'italic',
+					'color'			: '#666666'
+				}
+			},
+			'Subsection Title'	: {
+				selector	: 'h4',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '1.2em',
+					'font-variant'	: 'small-caps',
+					'color'			: '#666666'
+				}
+			},
+			'Links'	: {
+				selector	: 'a',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '1.2em',
+					'font-variant'	: 'small-caps',
+					'color'			: '#666666'
+				}
+			},
+			'Lists'	: {
+				selector	: 'h4',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '1em',
+					'color'			: '#666666'
+				}
+			},
+			'Block Quote'	: {
+				selector	: 'h4',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '1em',
+					'font-style'	: 'italic',
+					'color'			: '#666666'
+				}
+			},
+			'Code'	: {
+				selector	: 'h4',
+				css			: {
+					'font-family'	: '"Courier New", serif',
+					'font-size'		: '1em',
+					'color'			: '#000000'
+				}
+			},
+		}
 	}
 }
 
@@ -360,6 +422,8 @@ $.fn.extend({
 					self.removeCycles()
 						.unfillGrid()
 						.remove();
+						
+					$('#tb-canvas-settings').click();
 				});
 		});
 	},
@@ -965,12 +1029,7 @@ $.fn.extend({
 		return this.each(function(){
 			$(this).bind(settings.event, function() {
 				// Replace everything in the selected array with this.
-				
-				$('#inspector').trigger('inspector-before-update');
-				g.ir.selected = [ $(this) ];
-				$('#inspector').trigger('inspector-update');
-				
-				$('#tabs-inspector').tabs('select','#ir-module');
+				irUpdate( $(this) );
 			});		
 		});
 	},
@@ -1273,12 +1332,31 @@ function initDialogs() {
 --------------------------------------------------- */
 
 function initInspector() {
+	$('#editor').data('location', g.canvas);
+	// Select canvas by default
+	g.ir.selected = [ $('#editor') ];
+	
 	irLoad();
 	irSave();
 	irNew();
 	irInstructions();
+	irCanvasSettings();
 	irLabelForm();
 	irTypography();
+}
+
+function irUpdate( selected, tabId ) {
+	tabId = tabId || '#ir-module';
+	
+	$('#inspector').trigger('ir-before-update');
+	// Set selected
+	g.ir.selected = ( $.isArray(selected) ) ? selected : [ selected ];
+	$('#inspector').trigger('ir-update');
+	// Select tab
+	$('#tabs-inspector').tabs('select', tabId );
+	
+	if ( '#ir-module' === tabId ) // Update ir-module tabs
+		g.ir.fn.updateTabs( tabId );
 }
 
 function irLoad() {
@@ -1435,6 +1513,12 @@ function irInstructions() {
 	});
 }
 
+function irCanvasSettings() {
+	$('#tb-canvas-settings').click(function(){
+		irUpdate( $('#editor') );
+	});
+}
+
 function irLabelForm() {
 	var form = {
 			name : $('#mod-label-name'),
@@ -1445,21 +1529,29 @@ function irLabelForm() {
 		labels = g.ir.labels,
 		defaultName = 'Sidebar 1';
 	
-	$('#inspector').bind('inspector-before-update', function(){
-		if( getSelectedObj() ) {
-			if ( ! isLimited( getSelectedLoc().type ) ) { // Check if type is named
-				form.name.triggerHandler('focus'); // Trigger focus/blur in case input is still selected
-				form.name.triggerHandler('blur');
-			}
+	$('#inspector').bind('ir-before-update', function(){
+		if( getSelectedObj().attr('id') === $('#editor').attr('id') )
+			return;
+		
+		if ( ! isLimited( getSelectedLoc().type ) ) { // Check if type is named
+			form.name.triggerHandler('focus'); // Trigger focus/blur in case input is still selected
+			form.name.triggerHandler('blur');
 		}
 	});
 	
-	$('#inspector').bind('inspector-update', function() {
+	$('#inspector').bind('ir-update', function() {
+		if( getSelectedObj().attr('id') === $('#editor').attr('id') ) {
+			g.ir.fn.hideTab( '#mod-label', '#ir-module' );
+			return;
+		}
+		
+		g.ir.fn.showTab( '#mod-label', '#ir-module' );
+		
 		var o = getSelectedLoc();
 		
 		form.type.children('option[value='+ o.type +']')
 			.attr('selected', 'selected');
-				
+			
 		updateName();
 	});
 	
@@ -1563,7 +1655,7 @@ function irTypography() {
 	// Hide font-input
 	$('#mod-typo-font-input').hide().removeClass('hide');
 	
-	var cur, obj = {}, reset = {}, samples = g.typo,
+	var cur, obj = {}, reset = {},
 		preview = $('#mod-typo-preview textarea'),
 		togText = { select : $('#mod-typo-font-toggle').text(), input : $('#mod-typo-font-toggle').val() };
 	
@@ -1812,12 +1904,6 @@ function irTypography() {
 		$(this).children().eq(0).attr('selected','selected');
 	});
 	
-	// Populate sample ul
-	var samplelist = '';
-	$.each( samples, function( i, val ){
-		samplelist += '<li><div class="mod-typo-sample-preview">Elastic</div><div class="mod-typo-sample-name">'+i+'</div></li>';
-	});
-	
 	// UL scrolling buttons
 	$('button.mod-typo-samples-scroll').bind('buttonOn', function(){
 		var ul = $('#mod-typo-samples ul'),
@@ -1829,22 +1915,44 @@ function irTypography() {
 	}).bind('buttonOff', function(){
 		$('#mod-typo-samples ul').stop();
 	});
-	
-	// Style list items & create click event
-	$('#mod-typo-samples ul').html( samplelist ).children().each( function(){
-		$(this).children('.mod-typo-sample-preview').css( samples[ $(this).children('.mod-typo-sample-name').text() ].css );
-	}).click(function(){
-		var sample = $(this).find('.mod-typo-sample-name').text();
 		
-		obj = samples[ sample ].css;
-		reset = $.extend({},obj);
-		preview = $(this).children('.mod-typo-sample-preview').add('#mod-typo-preview textarea');
-		$('#mod-typo-title span').text( sample + ':');
-		updateTypoControls();
+	// Update the typo panel on inspector update
+	$('#inspector').bind('ir-update', function(){
+		updateTypoSamples();
 	});
 	
-	// Select first item
-	$('#mod-typo-samples ul').children().eq(0).click();
+	function updateTypoSamples() {
+		var selected = g.ir.selected[0];
+		if( typeof selected.data('location') === 'undefined' || typeof selected.data('location').typo === 'undefined' ) {
+			g.ir.fn.hideTab( '#mod-typo', '#ir-module' );
+			return;
+		}
+		
+		g.ir.fn.showTab( '#mod-typo', '#ir-module' );
+		samples = selected.data('location').typo;
+		
+		// Populate sample ul
+		var samplelist = '';
+		$.each( samples, function( i, val ){
+			samplelist += '<li><div class="mod-typo-sample-preview">Elastic</div><div class="mod-typo-sample-name">'+i+'</div></li>';
+		});
+
+		// Style list items & create click event
+		$('#mod-typo-samples ul').html( samplelist ).children().each( function(){
+			$(this).children('.mod-typo-sample-preview').css( samples[ $(this).children('.mod-typo-sample-name').text() ].css );
+		}).click(function(){
+			var sample = $(this).find('.mod-typo-sample-name').text();
+
+			obj = samples[ sample ].css;
+			reset = $.extend({},obj);
+			preview = $(this).children('.mod-typo-sample-preview').add('#mod-typo-preview textarea');
+			$('#mod-typo-title span').text( sample + ':');
+			updateTypoControls();
+		});
+
+		// Select first item
+		$('#mod-typo-samples ul').children().eq(0).click();
+	}
 	
 	function updateTypoControls() {
 		// Disable inspector
@@ -1906,6 +2014,7 @@ function irTypography() {
 			preview.css( property, value ); // Update the preview
 		}
 	}
+
 }
 
 /* ---------------------------------------------------
@@ -2471,8 +2580,8 @@ function generateStyleCss() {
 	css.push('\n\n/* GENERATED BY THE ELASTIC THEME EDITOR */\n');
 	css.push('/* TYPOGRAPHY */\n');
 	
-	for( var i in g.typo ) {
-		css.push( cssObjToString( g.typo[i].selector, g.typo[i].css ) );
+	for( var i in g.canvas.typo ) {
+		css.push( cssObjToString( g.canvas.typo[i].selector, g.canvas.typo[i].css ) );
 	}
 	
 	css.push('\n\n');
@@ -2520,7 +2629,7 @@ function saveState() {
 	var json = {};
 	json.layout = [];
 	json.bp = $.extend({}, g.bp);
-	json.typo = $.extend({}, g.typo);
+	json.canvas = $.extend({}, g.canvas);
 	
 	$('.e').each(function(){
 		json.layout.push($(this).data('location'));
@@ -2532,7 +2641,7 @@ function saveState() {
 
 function loadState( state ) { // Expects an object
 	$.extend(g.bp, state.bp);
-	g.typo = $.extend({}, state.typo);
+	g.canvas = $.extend({}, state.canvas);
 	fixBlueprintCSS(g.bp.column_count, g.bp.column_width, g.bp.gutter_width);
 	
 	for (var i = 0; i < state.layout.length; i++) {

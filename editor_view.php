@@ -2,6 +2,7 @@
 	<ul>
 		<li id="tb-save" class="button-primary">Save Theme</li>
 		<li id="tb-instructions" class="button-secondary">Instructions</li>
+		<li id="tb-canvas-settings" class="button-secondary">Canvas Settings</li>
 	</ul>
 	
 	<div id="dialogs" class="hide">
@@ -98,8 +99,6 @@
 				<div id="ir-module">
 					<ul>
 						<li><a href="#mod-label">Type</a></li>
-						<li><a href="#mod-label">Background</a></li>
-						<li><a href="#mod-label">Borders</a></li>
 						<li><a href="#mod-typo">Typography</a></li>
 					</ul>
 					<div id="mod-label">
