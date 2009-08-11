@@ -13,10 +13,11 @@ class Elastic_Customizer {
 		$structure = $_POST["structure"];
 		$state = stripslashes( $_POST["state"] );
 		$settings = json_decode( stripslashes( $_POST["settings"] ) );
+		$style = $_POST["style"];
 
 		$files = array(
 			"layout.php" => $this->generate_layout( $layout ),
-			"style.css" => $this->generate_style( $settings ),
+			"style.css" => $this->generate_style( $settings, $style ),
 			"structure.css" => $structure,
 			"state.php" => $state
 			);
@@ -32,7 +33,7 @@ class Elastic_Customizer {
 	 * @return string A valid css file
 	 * @author Daryl Koopersmith
 	 */
-	function generate_style( $settings ) {
+	function generate_style( $settings, $style ) {
 		$out = "/*\nTheme Name: ";
 		$out.= $settings->name;
 		$out.= "\nTheme URI: ";
@@ -52,6 +53,8 @@ class Elastic_Customizer {
 		ob_start();
 		include("framework_style.css");
 		$out.= ob_get_clean();
+		
+		$out.= $style;
 		
 		return $out;
 	}

@@ -31,7 +31,7 @@ button.el-button { width:auto; overflow:visible; }
 .el-toolbar .el-input, .el-toolbar .el-select { margin: 0; }
 .el-toolbar .el-buttonset { margin-right:1.5em; padding-left: 1px; }
 .el-toolbar .el-button { font-size: 1em; }
-.el-toolbar .el-toolbar-last { margin-right: 0; }
+.el-toolbar .el-toolbar-last { margin-right: 0 !important; }
 
 /* Elastic added button styles */
 .el-button.ui-state-active { z-index: 1; }
@@ -285,15 +285,14 @@ button.mod-typo-samples-scroll {
 	padding-top: 1em;
 }
 
+#mod-typo-toolbar .el-buttonset {
+	margin-right: 1.6em;
+}
+
 #mod-typo-toolbar .el-button {
 	padding-left: 1em;
 	padding-right: 1em;
 	width: auto;
-}
-
-#mod-typo-caps .el-button {
-	padding-left: .9em;
-	padding-right: .9em;
 }
 
 #mod-typo-caps-all {
