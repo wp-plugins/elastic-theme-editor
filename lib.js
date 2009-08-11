@@ -124,8 +124,6 @@ var g = {
 			hideTab			: function( id, tabsId ) {
 				tabsId = tabsId || '#tabs-inspector';
 				
-				console.log('hide', id, 'in', tabsId);
-				
 				if( typeof g.ir.tabs[tabsId] === 'undefined')
 					g.ir.tabs[tabsId] = { hide : [], show : [] };
 				
@@ -133,8 +131,6 @@ var g = {
 			},
 			showTab			: function( id, tabsId ) {
 				tabsId = tabsId || '#tabs-inspector';
-				
-				console.log('show', id, 'in', tabsId);
 
 				if( typeof g.ir.tabs[tabsId] === 'undefined')
 					g.ir.tabs[tabsId] = { hide : [], show : [] };
@@ -158,14 +154,11 @@ var g = {
 				var selected = false;
 				$.each( g.ir.tabs[tabsId].hide, function(){
 					selected = g.ir.fn.getTabAnchor( this, tabsId ).parent().addClass('hide').is('.ui-tabs-selected') || selected;
-					console.log('selected', selected);
 				});
 				
 				if( selected ) {
 					// If the tab we're hiding is selected, select the first visible tab.
 					var show = $(tabsId + ' > ul:first').children(':not(.hide)').eq(0).children('a').attr('href');
-					
-					console.log('show',show, 'ul', $(tabsId + ' > ul:first'), 'a', $(tabsId + ' > ul:first').children(':not(.hide)').eq(0).children('a').attr('href') );
 					
 					if( typeof show !== 'undefined') {  // If there is at least one tab, show it.
 						$( tabsId ).tabs('select', show);
@@ -1530,7 +1523,7 @@ function irLabelForm() {
 		defaultName = 'Sidebar 1';
 	
 	$('#inspector').bind('ir-before-update', function(){
-		if( getSelectedObj().attr('id') === $('#editor').attr('id') )
+		if( getSelectedObj().attr('id') === $('#editor').attr('id') || typeof getSelectedLoc() === 'undefined' )
 			return;
 		
 		if ( ! isLimited( getSelectedLoc().type ) ) { // Check if type is named
