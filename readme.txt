@@ -9,7 +9,44 @@ An interactive theme editor for the WordPress Admin.
 
 == Description ==
 
-Elastic is an interactive theme editor for the WordPress Admin. Elastic breaks themes down into modules, which you can arrange in any configuration via drag-and-drop. Users can customize a theme's fonts and styles, or just rearrange its structure. Themes created with Elastic can be edited at any time—users can save their progress, or distribute their theme. Elastic builds themes with the Elastic theme framework, which allows theme developers to use the editor as a starting point for incredibly customized themes.
+Elastic is an interactive theme editor for the WordPress Admin.
+
+= Features =
+
+* **Infinite theme arrangements:** Drag-and-drop makes themes easy to customize!
+* **Custom fonts:** Preview your selections with the detailed typography editor.
+* **Grid-based** for easy organization. **Custom grids** for flexibility.
+* **Portable:** Share your themes with anyone! Elastic creates a standard WordPress theme.
+* **Theme Framework:** For theme developers, the editor is just the beginning—Elastic themes are based on the powerful Elastic theme framework.
+* *Many more coming soon!*
+
+== Installation ==
+
+= Install =
+
+1. Unzip the `elastic.zip` file
+1. Upload the folder to your `/wp-content/plugins/` directory
+1. Activate the Elastic Theme Editor on the 'Plugins' page.
+1. A subpage for Elastic will appear in the Themes menu.
+
+= Use an Elastic theme =
+
+1. Create a theme using the editor.
+1. Your theme will appear on the 'Themes' page.
+1. Activate your theme!
+
+== Frequently Asked Questions ==
+
+= How do I use a theme? =
+Using an Elastic theme is just like using any other theme:
+
+1. Create a theme using the editor.
+1. Your theme will appear on the 'Themes' page.
+1. Activate your theme!
+
+= How do I remove a theme? =
+
+1. On the 'Themes' page, click the 'Delete' link next to your theme.
 
 == Changelog ==
 = 0.0.2.4 =
