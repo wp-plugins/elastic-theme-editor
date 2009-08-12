@@ -229,7 +229,7 @@ var g = {
 				}
 			},
 			'Post Title'		: {
-				selector	: 'h2',
+				selector	: 'h2 h2.entry-title',
 				css			: {
 					'font-family'	: 'Arial, sans-serif',
 					'font-size'		: '2.4em',
@@ -2646,7 +2646,7 @@ function loadState( state ) { // Expects an object
 		
 		$('#editor').data('location',
 			$.extend( {},
-				state.canvas // Add other checks 
+				state.canvas // Add other checks if necessary
 			)
 		);	
 	}
