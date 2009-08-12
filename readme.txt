@@ -3,7 +3,7 @@ Contributors: koopersmith
 Tags: elastic, theme, editor, framework
 Requires at least: 2.8
 Tested up to: 2.8.3
-Stable tag: 0.0.2.3
+Stable tag: 0.0.2.4
 
 An interactive theme editor for the WordPress Admin.
 
