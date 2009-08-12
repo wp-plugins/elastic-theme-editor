@@ -68,6 +68,35 @@ class Module extends Object {
 	}
 	
 	/**
+	 * Loads and sets views from a folder.
+	 *
+	 * @param string $folder Absolute path to folder
+	 * @return void
+	 * @author Daryl Koopersmith
+	 */
+	function load_views_folder( $folder = TEMPLATEPATH ) {
+		$path = trailingslashit( $folder ) . strtolower( get_class($this) );
+
+		foreach( glob( $path . '/*.php') as $file ) {
+			$view = basename( $file, '.php');
+			$view = ( 'global' === $view ) ? '' : $view; // Global view is named global.php. Can't have a file named '.php'
+
+			$this->set_view( $view, $file, true );
+		}
+	}
+
+	/**
+	 * Loads and sets default views
+	 *
+	 * @return void
+	 * @author Daryl Koopersmith
+	 */
+	function load_default_views() {
+		$path = elastic_get('path');
+		$this->load_views_folder( $path['default-views'] );
+	}
+	
+	/**
 	 * Removes any view associated with a provided context.
 	 *
 	 * @param string $view 
@@ -91,18 +120,6 @@ class Module extends Object {
 		ob_start();
 		elastic_do_atomic_specific( $this->id . '_view', $this );
 		return ob_get_clean();
-	}
-	
-	function load_default_views() {
-		$path = elastic_get('path');
-		$path = trailingslashit( $path['default-views'] ) . strtolower( get_class($this) );
-		
-		foreach( glob( $path . '/*.php') as $file ) {
-			$view = basename( $file, '.php');
-			$view = ( 'global' === $view ) ? '' : $view; // Global view is named global.php. Can't have a file named '.php'
-			
-			$this->set_view( $view, $file, true );
-		}
 	}
 	
 	/**
