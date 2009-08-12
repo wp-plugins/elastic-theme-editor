@@ -13,7 +13,7 @@ class Elastic_Customizer {
 		$structure = $_POST["structure"];
 		$state = stripslashes( $_POST["state"] );
 		$settings = json_decode( stripslashes( $_POST["settings"] ) );
-		$style = $_POST["style"];
+		$style = stripslashes( $_POST["style"] );
 
 		$files = array(
 			"layout.php" => $this->generate_layout( $layout ),
