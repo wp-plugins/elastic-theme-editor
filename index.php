@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Elastic Theme Editor
-Plugin URI: http://code.google.com/p/elastictheme/
+Plugin URI: http://wordpress.org/extend/plugins/elastic-theme-editor/
 Description: A theme editor for the Elastic framework.
 Version: 0.0.2.4
 Author: Daryl Koopersmith
-Author URI: http://koopersmith.wordpress.com
+Author URI: http://gsoc2009wp.wordpress.com/tag/elastic/
 
     Copyright 2009  Daryl Koopersmith  (email : dkoopersmith@gmail.com)
 
