@@ -144,8 +144,6 @@ var g = {
 				if( typeof g.ir.tabs[tabsId] === 'undefined')
 					return;
 					
-				console.log('tabs', g.ir.tabs[tabsId] );
-					
 				// Show tabs
 				$.each( g.ir.tabs[tabsId].show, function(){
 					g.ir.fn.getTabAnchor( this, tabsId ).parent().filter('.hide').removeClass('hide');
@@ -2625,6 +2623,7 @@ function saveState() {
 	var json = {};
 	json.layout = [];
 	json.bp = $.extend({}, g.bp);
+	console.log('editor', $('#editor').data('location'));
 	json.canvas = $.extend({}, $('#editor').data('location'));
 	json.version = g.version;
 	
@@ -2639,14 +2638,15 @@ function saveState() {
 function loadState( state ) { // Expects an object
 	$.extend(g.bp, state.bp);
 	
-	if( typeof state.canvas !== 'undefined' ) {
+	if( typeof state.canvas !== 'undefined' && typeof state.version !== 'undefined') {
 		var e = $('#editor').data('location');
 		var s = state.canvas;
 		
+		console.log( 'state.canvas', state.canvas );
+		
 		$('#editor').data('location',
 			$.extend( {},
-				state.canvas,
-				( typeof s.typo !== 'undefined' ) ? e.typo : {} // For themes without type definitions
+				state.canvas // Add other checks 
 			)
 		);	
 	}
