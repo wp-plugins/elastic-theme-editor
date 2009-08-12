@@ -8,13 +8,24 @@
 
 class Module extends Object {
 	var $id;
+	var $type;
 	
-	function __construct($id) {			
-		$this->id = $id;
-		
+	/**
+	 * Constructs a new Module.
+	 *
+	 * @param string $id The id of the module. Must be a unique string. 
+	 * @param string $type Optional. Default, the module's class (lowercase). The type of the module.
+	 * @author Daryl Koopersmith
+	 */
+	function __construct( $id = NULL, $type = NULL ) {
 		if( ! isset($id) )
 			return;
-		
+			
+		if( ! isset($type) )
+			$type = strtolower( get_class( $this ) );
+			
+		$this->id = $id;
+		$this->type = $type;
 		$this->load_default_views();
 		
 		add_filter( elastic_format_hook( $this->id . '_wrap_before', 'admin' ), array($this, '_blank') );
@@ -75,7 +86,7 @@ class Module extends Object {
 	 * @author Daryl Koopersmith
 	 */
 	function load_views_folder( $folder = TEMPLATEPATH ) {
-		$path = trailingslashit( $folder ) . strtolower( get_class($this) );
+		$path = trailingslashit( $folder ) . $this->type;
 
 		foreach( glob( $path . '/*.php') as $file ) {
 			$view = basename( $file, '.php');
@@ -123,14 +134,14 @@ class Module extends Object {
 	}
 	
 	/**
-	 * Returns the html in which the module is wrapped.
+	 * Private. Returns the html in which the module is wrapped.
 	 * TODO: add a hook to modify the html.
 	 *
 	 * @return void
 	 * @author Daryl Koopersmith
 	 */
 	function _wrap_before() {
-		return "<div id='{$this->id}' class='" . strtolower ( get_class( $this ) ) . "'>";
+		return "<div id='{$this->id}' class='" . $this->type . "'>";
 	}
 	
 	function _wrap_after() {
@@ -138,7 +149,7 @@ class Module extends Object {
 	}
 	
 	/**
-	 * Blank function to be used in conjunction with both filters and actions.
+	 * Private. Blank function to be used in conjunction with both filters and actions.
 	 *
 	 * @param string $arg 
 	 * @return string Returns the empty string only if $arg is set.
@@ -201,7 +212,7 @@ class Module extends Object {
 	}
 	
 	/**
-	 * Callback for get_module (modules by id).
+	 * Private. Callback for get_module (modules by id).
 	 *
 	 * @param string $id 
 	 * @param string $ptr 
@@ -225,7 +236,7 @@ class Module extends Object {
 	}
 	
 	/**
-	 * Callback for get_module_by_type
+	 * Private. Callback for get_module_by_type
 	 *
 	 * @param string $type 
 	 * @param string $ptr 
@@ -233,7 +244,7 @@ class Module extends Object {
 	 * @author Daryl Koopersmith
 	 */
 	function _get_modules_by_type( $type, $ptr ) {
-		return ( strtolower($type) === strtolower( get_class($ptr) ) );
+		return ( $type === $ptr->type );
 	}
 }
 
