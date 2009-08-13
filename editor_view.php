@@ -163,7 +163,7 @@
 
 							</div>
 
-							<div id="mod-typo-secondary" class="ui-priority-secondary">
+							<div id="mod-typo-secondary">
 								<div id="mod-typo-toolbar" class="el-toolbar ui-widget-header ui-corner-all ui-helper-clearfix">
 									<div class="el-buttonset el-buttonset-multi">
 										<button id="mod-typo-b" class="el-button ui-state-default ui-corner-left">
