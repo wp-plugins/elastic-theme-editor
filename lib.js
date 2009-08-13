@@ -2534,11 +2534,6 @@ function generateOutput( options, callback ) {
 		
 		name = nameToId( name );
 		
-		$(this).addClass(type);
-		
-		$(this).addClass('module');
-		$(this).attr('id', name);
-		
 		css += '#'+ name + ' {';
 		css += 'width : '+$(this).width()+'px;'
 		css += 'margin-right : '+$(this).css('margin-right')+';';
