@@ -115,7 +115,7 @@ class Module extends Object {
 
 		foreach( glob( $path . '/*.php') as $file ) {
 			$view = basename( $file, '.php');
-			$view = ( 'global' === $view ) ? '' : $view; // Global view is named global.php. Can't have a file named '.php'
+			$view = ( 'index' === $view ) ? '' : $view; // Global view is named global.php. Can't have a file named '.php'
 
 			$this->set_view( $view, $file, true );
 		}
