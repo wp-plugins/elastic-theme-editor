@@ -129,7 +129,10 @@ class Module extends Object {
 	 */
 	function load_default_views() {
 		$path = elastic_get('path');
-		$this->load_views_folder( $path['default-views'] );
+		$this->load_views_folder( $path['fallback-views'] );
+		$this->load_views_folder( $path['theme-views'] );
+		if ( elastic_get('has_child') )
+			$this->load_views_folder( $path['child-views'] );
 	}
 	
 	/**

@@ -3,8 +3,10 @@ class Elastic {
 	var $layout;
 	var $context;
 	var $prefix;
+	var $module_prefix;
 	var $theme_data;
 	var $child_data;
+	var $has_child;
 	var $module_types = array( 'header', 'content', 'sidebar' );
 	var $path = array();
 	
@@ -12,15 +14,19 @@ class Elastic {
 		
 		// Set prefix for all hooks and ids.
 		$this->prefix = apply_filters('elastic_prefix','elastic');
+		$this->module_prefix = apply_filters( $this->prefix . '_module_prefix','module');
 		
 		// Get theme and child theme data
-		$this->theme_data = apply_filters($prefix . 'theme_data', get_theme_data(TEMPLATEPATH . '/style.css') );
-		$this->child_data = apply_filters($prefix . 'child_data', get_theme_data(STYLESHEETPATH . '/style.css') );
+		$this->theme_data = apply_filters($this->prefix . 'theme_data', get_theme_data(TEMPLATEPATH . '/style.css') );
+		$this->child_data = apply_filters($this->prefix . 'child_data', get_theme_data(STYLESHEETPATH . '/style.css') );
+		$this->has_child = ( STYLESHEETPATH !== TEMPLATEPATH );
 		
 		// Set paths
 		$this->path['library'] = trailingslashit( TEMPLATEPATH ) . 'library';
 		$this->path['classes'] = trailingslashit( $this->path['library'] ) . 'classes';
-		$this->path['default-views'] = trailingslashit( $this->path['library'] ) . 'default-views';
+		$this->path['fallback-views'] = trailingslashit( $this->path['library'] ) . 'fallback-views';
+		$this->path['theme-views'] = trailingslashit( TEMPLATEPATH ) . 'theme';
+		$this->path['child-views'] = trailingslashit( STYLESHEETPATH ) . 'theme';
 		
 		// Load classes
 		require_once( $this->path['classes'] . '/object.php');
