@@ -28,8 +28,8 @@ class Module extends Object {
 		$this->type = $type;
 		$this->load_default_views();
 		
-		add_filter( elastic_format_hook( $this->id . '_wrap_before', 'admin' ), array($this, '_blank') );
-		add_filter( elastic_format_hook( $this->id . '_wrap_after', 'admin' ), array($this, '_blank') );
+		add_filter( elastic_format_hook( $this->id . '_wrap_before', 'admin' ), array(&$this, '_blank') );
+		add_filter( elastic_format_hook( $this->id . '_wrap_after', 'admin' ), array(&$this, '_blank') );
 	}
 	
 	/**
@@ -65,10 +65,10 @@ class Module extends Object {
 		
 		$hook = $this->_format_view_hook( $view );
 		if( $callback === false ) {
-			$callback = array($this, '_blank');
+			$callback = array(&$this, '_blank');
 		} else if ( $file ) {
 			$this->_views[$view] = $callback;
-			$callback = array($this, '_load_file_view');
+			$callback = array(&$this, '_load_file_view');
 		}
 		
 		add_action( $hook, $callback, 10, 2 );

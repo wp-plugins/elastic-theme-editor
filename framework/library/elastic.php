@@ -36,14 +36,14 @@ class Elastic {
 		$this->layout = $layout;
 		
 		// Load styles
-		add_action('template_redirect', array($this, 'load_styles') );
+		add_action('template_redirect', array(&$this, 'load_styles') );
 		
 		// Get context
-		add_action('template_redirect', array($this, 'get_context') );
+		add_action('template_redirect', array(&$this, 'get_context') );
 		//$this->context = $this->get_context();
 		
 		// Register sidebars for all pages (including admin)
-		add_action('init', array($this, 'register_sidebars') );
+		add_action('init', array(&$this, 'register_sidebars') );
 	}
 
 	function load_styles() {
