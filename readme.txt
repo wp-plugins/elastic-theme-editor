@@ -2,7 +2,7 @@
 Contributors: koopersmith
 Tags: elastic, theme, editor, framework
 Requires at least: 2.8
-Tested up to: 2.8.3
+Tested up to: 2.8.4
 Stable tag: 0.0.2.4
 
 An interactive theme editor for the WordPress Admin.
@@ -10,10 +10,11 @@ An interactive theme editor for the WordPress Admin.
 == Description ==
 
 Elastic is an interactive theme editor for the WordPress Admin.
+Elastic is still in development: we try and keep Elastic as bug free as possible, but if you encounter any errors, let us know!
 
 = Features =
 
-* **Infinite theme arrangements:** Drag-and-drop makes themes easy to customize!
+* **Infinite theme arrangements:** Drag-and-drop makes themes easy to customize.
 * **Custom fonts:** Preview your selections with the detailed typography editor.
 * **Grid-based** for easy organization. **Custom grids** for flexibility.
 * **Portable:** Share your themes with anyone! Elastic creates a standard WordPress theme.
@@ -46,9 +47,13 @@ Using an Elastic theme is just like using any other theme:
 
 = How do I remove a theme? =
 
-1. On the 'Themes' page, click the 'Delete' link next to your theme.
+* On the 'Themes' page, click the 'Delete' link next to your theme.
 
 == Changelog ==
+= 0.0.2.5 =
+* PHP4 bugs fixed
+* Load theme bug fixed
+
 = 0.0.2.4 =
 * Typography loads from saved themes.
 
