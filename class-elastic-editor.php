@@ -140,7 +140,7 @@ class Elastic_Editor {
 		
 		foreach($themes as $theme) {
 			if ( $theme['Name'] === $name ) {
-				echo file_get_contents( WP_CONTENT_URL . trailingslashit( $theme['Stylesheet Dir'] ) . 'state.php' );
+				echo file_get_contents( WP_CONTENT_DIR . trailingslashit( $theme['Stylesheet Dir'] ) . 'state.php' );
 				break;
 			}
 		}
