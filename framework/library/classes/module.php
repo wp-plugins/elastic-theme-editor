@@ -63,7 +63,7 @@ class Module extends Object {
 	function set_view( $view, $callback, $file = false ) {
 		$this->remove_view( $view );
 		
-		$hook = elastic_format_hook( $this->id . '_view', $view );
+		$hook = $this->_format_view_hook( $view );
 		if( $callback === false ) {
 			$callback = array($this, '_blank');
 		} else if ( $file ) {
@@ -74,10 +74,35 @@ class Module extends Object {
 		add_action( $hook, $callback, 10, 2 );
 	}
 	
-	function _load_file_view( $view, $module ) {
-		include $this->_views[$view];
+	function has_view( $view ) {
+		return has_action( $this->_format_view_hook( $view ) );
+	}
+
+	/**
+	 * Removes any view associated with a provided context.
+	 *
+	 * @param string $view 
+	 * @return void
+	 * @author Daryl Koopersmith
+	 */
+	function remove_view( $view ) {
+		if( $this->has_view( $view ) )
+			remove_all_actions( $this->_format_view_hook( $view ) );
 	}
 	
+	
+	/**
+	 * Returns the output of the most contextually-specific set view.
+	 *
+	 * @return string
+	 * @author Daryl Koopersmith
+	 */
+	function do_view() {
+		ob_start();
+		elastic_do_atomic_specific( $this->_format_view_hook(), $this );
+		return ob_get_clean();
+	}
+
 	/**
 	 * Loads and sets views from a folder.
 	 *
@@ -108,30 +133,34 @@ class Module extends Object {
 	}
 	
 	/**
-	 * Removes any view associated with a provided context.
+	 * Private. Formats the internal view hook.
 	 *
-	 * @param string $view 
+	 * @param string $view Optional. If set, returns a formatted hook. If null, returns the formatted id.
 	 * @return void
 	 * @author Daryl Koopersmith
 	 */
-	function remove_view( $view ) {
-		$hook = elastic_format_hook( $this->id . '_view', $view );
-		if( has_action( $hook ) )
-			remove_all_actions( $hook );
+	function _format_view_hook( $view = NULL ) {
+		$id = $this->id . '_view';
+		
+		if( ! isset($view) )
+			return $id;
+		else
+			return elastic_format_hook( $id, $view );
 	}
-	
 	
 	/**
-	 * Returns the output of the most contextually-specific set view.
+	 * Private. Used in set_view to load files.
 	 *
-	 * @return string
+	 * @param string $view 
+	 * @param string $module 
+	 * @return void
 	 * @author Daryl Koopersmith
 	 */
-	function do_view() {
-		ob_start();
-		elastic_do_atomic_specific( $this->id . '_view', $this );
-		return ob_get_clean();
+	function _load_file_view( $view, $module ) {
+		include $this->_views[$view];
 	}
+	
+
 	
 	/**
 	 * Private. Returns the html in which the module is wrapped.
