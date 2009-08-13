@@ -25,8 +25,8 @@ class Elastic {
 		$this->path['library'] = trailingslashit( TEMPLATEPATH ) . 'library';
 		$this->path['classes'] = trailingslashit( $this->path['library'] ) . 'classes';
 		$this->path['fallback-views'] = trailingslashit( $this->path['library'] ) . 'fallback-views';
-		$this->path['theme-views'] = trailingslashit( TEMPLATEPATH ) . 'theme';
-		$this->path['child-views'] = trailingslashit( STYLESHEETPATH ) . 'theme';
+		$this->path['theme-custom'] = trailingslashit( TEMPLATEPATH ) . 'theme';
+		$this->path['child-custom'] = trailingslashit( STYLESHEETPATH ) . 'theme';
 		
 		// Load classes
 		require_once( $this->path['classes'] . '/object.php');
@@ -160,12 +160,18 @@ $elastic = new Elastic();
 $elastic->init();
 
 function elastic_get($var) {
+    global $elastic;
+    
+    if( isset($elastic->$var) ) {
+        return $elastic->$var;
+    }
+    return false;
+}
+
+function elastic_set($var, $value) {
 	global $elastic;
 	
-	if( isset($elastic->$var) ) {
-		return $elastic->$var;
-	}
-	return false;
+	$elastic->$var = $value;
 }
 
 /**

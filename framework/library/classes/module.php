@@ -130,9 +130,9 @@ class Module extends Object {
 	function load_default_views() {
 		$path = elastic_get('path');
 		$this->load_views_folder( $path['fallback-views'] );
-		$this->load_views_folder( $path['theme-views'] );
+		$this->load_views_folder( $path['theme-custom'] );
 		if ( elastic_get('has_child') )
-			$this->load_views_folder( $path['child-views'] );
+			$this->load_views_folder( $path['child-custom'] );
 	}
 	
 	/**
