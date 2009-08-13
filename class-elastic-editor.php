@@ -3,7 +3,8 @@
 class Elastic_Editor {
 	function init() {
 		// Dependencies
-		if ( ! class_exists('Services_JSON') ) require_once('JSON.php');
+		Elastic_Editor::init_json();
+		
 		require_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
 
 		require_once('class-elastic-customizer.php');
@@ -92,6 +93,28 @@ class Elastic_Editor {
 				'themes' => json_encode( Elastic_Editor::list_themes() )
 			));
 
+	}
+	
+	function init_json() {
+		if ( ! class_exists('Services_JSON') ) require_once('JSON.php');
+		
+		// Future-friendly json_encode
+		if( !function_exists('json_encode') ) {
+			function json_encode($data) {
+		        $json = new Services_JSON();
+		        return( $json->encode($data) );
+		    }
+		}
+
+		// Future-friendly json_decode
+		if( !function_exists('json_decode') ) 
+		{ 
+			function json_decode($data, $output_mode=false) { 
+				$param = $output_mode ? 16:null; 
+				$json = new Services_JSON($param); 
+				return( $json->decode($data) ); 
+			} 
+		}
 	}
 	
 	function list_themes() {
