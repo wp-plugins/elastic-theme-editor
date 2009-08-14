@@ -38,7 +38,7 @@ class Elastic {
 		require_once( $this->path['classes'] . '/content.php');
 		
 		// Get layout
-		require_once( TEMPLATEPATH . '/layout.php');
+		require_once( $this->path['theme-custom'] . '/layout.php');
 		$this->layout = $layout;
 		
 		// Load styles
