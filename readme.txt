@@ -3,7 +3,7 @@ Contributors: koopersmith
 Tags: elastic, theme, editor, framework
 Requires at least: 2.8
 Tested up to: 2.8.4
-Stable tag: 0.0.2.5
+Stable tag: 0.0.2.6
 
 An interactive theme editor for the WordPress Admin.
 
@@ -49,9 +49,15 @@ Using an Elastic theme is just like using any other theme:
 
 * On the 'Themes' page, click the 'Delete' link next to your theme.
 
+
 == Changelog ==
-= 0.0.2.5 =
+= 0.0.2.6 =
 * Typography still renders incorrectly. Will be fixed in next release.
+* New framework file structure implemented. Designed to be developer friendly—tutorial coming soon!
+* Modules improved: added hooks API.
+* Bug fixes: widget admin.
+
+= 0.0.2.5 =
 * PHP4 bugs fixed.
 * Load theme bug fixed.
 * Positioning bug fixed.
