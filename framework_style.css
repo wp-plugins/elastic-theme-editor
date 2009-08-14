@@ -1,29 +1,5 @@
 /* These styles adapted from Thematic */
 
-/*div {
-	float: left;
-}
-
-.content {
-	background: purple;
-}
-
-.sidebar {
-	background: silver;
-}
-
-.group {
-	background: #ddd;
-}
-
-.header {
-	background: green;
-}
-
-.footer {
-	background: teal;
-}*/
-
 /* Reset browser defaults */
 @import url('styles/reset.css');
 
@@ -48,7 +24,7 @@
 
 #group-1 {
 	float: none;
-	margin: 0 auto;
+	margin: 0 auto !important;
 }
 
 .sidebar, .footer {

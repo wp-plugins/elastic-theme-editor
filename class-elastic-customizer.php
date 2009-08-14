@@ -10,15 +10,15 @@ class Elastic_Customizer {
 	 */
 	function run() {
 		$layout = json_decode( stripslashes( $_POST["layout"] ) , true);
-		$structure = $_POST["structure"];
 		$state = stripslashes( $_POST["state"] );
 		$settings = json_decode( stripslashes( $_POST["settings"] ) );
+		$structure = stripslashes( $_POST["structure"] );
 		$style = stripslashes( $_POST["style"] );
 
 		$files = array(
-			"layout.php" => $this->generate_layout( $layout ),
-			"style.css" => $this->generate_style( $settings, $style ),
-			"structure.css" => $structure,
+			"custom/layout.php" => $this->generate_layout( $layout ),
+			"custom/style.css" => $this->generate_style( $structure, $style ),
+			"style.css" => $this->generate_settings( $settings ),
 			"state.php" => $state
 			);
 
@@ -27,13 +27,13 @@ class Elastic_Customizer {
 	}
 	
 	/**
-	 * Dynamically generates the contents of style.css
+	 * Dynamically generates the contents of custom/style.css
 	 *
 	 * @param string $settings Theme settings
 	 * @return string A valid css file
 	 * @author Daryl Koopersmith
 	 */
-	function generate_style( $settings, $style ) {
+	function generate_settings( $settings ) {
 		$out = "/*\nTheme Name: ";
 		$out.= $settings->name;
 		$out.= "\nTheme URI: ";
@@ -48,13 +48,24 @@ class Elastic_Customizer {
 		$out.= $settings->author_uri;
 		$out.= "\nTags: ";
 		$out.= $settings->tags;
-		$out.= "\n*/\n\n";
-		
+		$out.= "\n*/\n\n/* NOTE: THIS FILE IS ONLY USED FOR THEME INFO */";
+	}
+	
+	/**
+	 * Dynamically generates the contents of custom/style.css
+	 *
+	 * @param string $settings Theme settings
+	 * @return string A valid css file
+	 * @author Daryl Koopersmith
+	 */
+	function generate_style( $structure, $style ) {
 		ob_start();
 		include("framework_style.css");
 		$out.= ob_get_clean();
 		
 		$out.= $style;
+		$out.= "\n\n";
+		$out.= $structure;
 		
 		return $out;
 	}
