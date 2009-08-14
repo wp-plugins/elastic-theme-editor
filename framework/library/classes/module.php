@@ -169,11 +169,10 @@ class Module extends Object {
 	 * @author Daryl Koopersmith
 	 */
 	function load_default_views() {
-		$path = elastic_get('path');
-		$this->load_views_folder( $path['fallback-views'] );
-		$this->load_views_folder( $path['theme-custom'] );
+		$this->load_views_folder( elastic_get_path('fallback-views') );
+		$this->load_views_folder( elastic_get_path('custom') );
 		if ( elastic_get('has_child') )
-			$this->load_views_folder( $path['child-custom'] );
+			$this->load_views_folder( elastic_get_path('custom', 'child') );
 	}
 	
 	/**

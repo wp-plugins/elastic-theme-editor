@@ -11,6 +11,17 @@ class Elastic {
 	var $path = array();
 	
 	function init() {
+		$this->has_child = ( STYLESHEETPATH !== TEMPLATEPATH );
+		
+		// Load user's functions.php
+		$functions = TEMPLATEPATH . '/custom/functions.php';
+		if( file_exists( $functions ) )
+			include $functions;
+
+		// Load child's functions.php			
+		$functions = STYLESHEETPATH . '/custom/functions.php';
+		if( $this->has_child && file_exists( $functions ) )
+			include $functions;
 		
 		// Set prefix for all hooks and ids.
 		$this->prefix = apply_filters('elastic_prefix','elastic_');
@@ -19,43 +30,46 @@ class Elastic {
 		// Get theme and child theme data
 		$this->theme_data = apply_filters($this->prefix . 'theme_data', get_theme_data(TEMPLATEPATH . '/style.css') );
 		$this->child_data = apply_filters($this->prefix . 'child_data', get_theme_data(STYLESHEETPATH . '/style.css') );
-		$this->has_child = ( STYLESHEETPATH !== TEMPLATEPATH );
 		
 		// Set paths
-		$this->path['library'] = trailingslashit( TEMPLATEPATH ) . 'library';
+		$this->path['root'] = '';
+		$this->path['library'] = 'library';
 		$this->path['classes'] = trailingslashit( $this->path['library'] ) . 'classes';
 		$this->path['fallback-views'] = trailingslashit( $this->path['library'] ) . 'fallback-views';
-		$this->path['theme-custom'] = trailingslashit( TEMPLATEPATH ) . 'theme';
-		$this->path['child-custom'] = trailingslashit( STYLESHEETPATH ) . 'theme';
+		$this->path['custom'] = 'custom';
 		
 		// Load classes
-		require_once( $this->path['classes'] . '/object.php');
-		require_once( $this->path['classes'] . '/module.php');
-		require_once( $this->path['classes'] . '/group.php');
-		require_once( $this->path['classes'] . '/selection.php');
-		require_once( $this->path['classes'] . '/sidebar.php');
-		require_once( $this->path['classes'] . '/header.php');
-		require_once( $this->path['classes'] . '/content.php');
+		require_once( elastic_get_path('classes') . '/object.php');
+		require_once( elastic_get_path('classes') . '/module.php');
+		require_once( elastic_get_path('classes') . '/group.php');
+		require_once( elastic_get_path('classes') . '/selection.php');
+		require_once( elastic_get_path('classes') . '/sidebar.php');
+		require_once( elastic_get_path('classes') . '/header.php');
+		require_once( elastic_get_path('classes') . '/content.php');
 		
 		// Get layout
-		require_once( $this->path['theme-custom'] . '/layout.php');
+		require_once( elastic_get_path('custom', (elastic_get('has_child')) ? 'child' : 'theme' ) . '/layout.php');
 		$this->layout = $layout;
 		
 		// Load styles
 		add_action('template_redirect', array(&$this, 'load_styles') );
 		
-		// Get context
+		// Get context (once it's set)
 		add_action('template_redirect', array(&$this, 'get_context') );
-		//$this->context = $this->get_context();
+		// Get context now, for admin pages
+		$this->context = $this->get_context();
 		
-		// Register sidebars for all pages (including admin)
-		add_action('template_redirect', array(&$this, 'register_sidebars') );
+		// Register sidebars
+		if( is_admin() ) // Sidebars must be registered during admin_init, which is before template_redirect
+			add_action('init', array(&$this, 'register_sidebars') );
+		else // Sidebars are registered on template_redirect to ensure context has loaded
+			add_action('template_redirect', array(&$this, 'register_sidebars') );
 	}
 
 	function load_styles() {
-		$uri = trailingslashit( get_template_directory_uri() );
-		wp_enqueue_style( $this->prefix . 'structure', $uri . 'structure.css', false, '0.0.0.01');
-		wp_enqueue_style( $this->prefix . 'style', $uri . 'style.css', false, '0.0.0.01');
+		wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'uri') . '/style.css', false, '0.0.0.01');
+		if( elastic_get('has_child') )
+			wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'child', 'uri') . '/style.css', false, '0.0.0.01');
 	}
 	
 	function register_sidebars() {
@@ -173,6 +187,21 @@ function elastic_set($var, $value) {
 	global $elastic;
 	
 	$elastic->$var = $value;
+}
+
+function elastic_get_path( $name, $arg1 = 'theme', $arg2 = 'abs' ) {
+	$path = elastic_get('path');
+	
+	if( ! isset($path[ $name ]) )
+		return false;
+	
+	$uri = ( 'uri' === $arg1 || 'uri' === $arg2 );
+	$child = ( 'child' === $arg1 || 'child' === $arg2 );
+	
+	if( $uri )
+		return trailingslashit( ($child) ? get_stylesheet_directory_uri() : get_template_directory_uri() ) . $path[ $name ];
+	else
+		return trailingslashit( ($child) ? STYLESHEETPATH : TEMPLATEPATH ) . $path[ $name ];
 }
 
 /**
