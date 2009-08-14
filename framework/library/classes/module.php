@@ -9,7 +9,6 @@
 class Module extends Object {
 	var $id;
 	var $type;
-	var $prefix;
 	
 	/**
 	 * Constructs a new Module.
@@ -30,8 +29,8 @@ class Module extends Object {
 		
 		$this->load_default_views();
 		
-		add_filter( $this->format_hook( 'admin', '_html_before' ), array(&$this, '_blank') );
-		add_filter( $this->format_hook( 'admin', '_html_after' ), array(&$this, '_blank') );
+		add_filter( $this->format_hook( '_html_before', 'admin' ), array(&$this, '_blank') );
+		add_filter( $this->format_hook( '_html_after', 'admin' ), array(&$this, '_blank') );
 	}
 	
 	/**
@@ -45,13 +44,19 @@ class Module extends Object {
 		
 		// If view is empty, do not show module.
 		if ( ! empty( $view ) ) {
-			elastic_do_atomic( $this->id . '_before', $prefix );
-			echo elastic_apply_atomic( $this->id . '_html_before', $this->_html_before(), $prefix );
-			echo elastic_apply_atomic( $this->id, $view, $prefix );
-			echo elastic_apply_atomic( $this->id . '_html_after', $this->_html_after(), $prefix );
-			elastic_do_atomic( $this->id . '_after', $prefix );
+			$this->do_atomic( '_before', $prefix );
+			echo $this->apply_atomic( '_html_before', $this->_html_before(), $prefix );
+			echo $this->apply_atomic( '', $view, $prefix );
+			echo $this->apply_atomic( '_html_after', $this->_html_after(), $prefix );
+			$this->do_atomic( '_after', $prefix );
 		}
 	}
+	
+	/**
+	 * 
+	 * 		H  O  O  K  S     A  P  I
+	 *
+	 */
 	
 	/**
 	 * Formats a hook for this module.
@@ -61,9 +66,29 @@ class Module extends Object {
 	 * @return void
 	 * @author Daryl Koopersmith
 	 */
-	function format_hook( $view = "", $suffix = "" ) {
-		return elastic_format_hook( $this->id . $suffix, $view, elastic_get('module_prefix')  );
+	function format_hook( $suffix = "", $view = "" ) {
+		return elastic_format_hook( $this->id . $suffix, $view, elastic_get('module_prefix') );
 	}
+	
+	function do_atomic( $suffix = '' ) {
+		elastic_do_atomic( $this->id . $suffix, elastic_get('module_prefix') );
+	}
+	function do_atomic_specific( $suffix = '' ) {
+		elastic_do_atomic_specific( $this->id . $suffix, elastic_get('module_prefix') );
+	}
+	function apply_atomic( $suffix = '', $value ) {
+		return elastic_apply_atomic( $this->id . $suffix, $value, elastic_get('module_prefix') );
+	}
+	function apply_atomic_specific( $suffix = '', $value ) {
+		return elastic_apply_atomic_specific( $this->id . $suffix, $value, elastic_get('module_prefix') );
+	}
+	
+	
+	/**
+	 * 
+	 * 		V  I  E  W  S     A  P  I
+	 *
+	 */
 	
 	/**
 	 * Binds a callback to a view. At any time, only one callback will be bound to a view.
@@ -114,7 +139,7 @@ class Module extends Object {
 	 */
 	function do_view() {
 		ob_start();
-		elastic_do_atomic_specific( $this->_format_view_hook(), elastic_get('module_prefix'), $this );
+		$this->do_atomic_specific( $this->_format_view_hook(), elastic_get('module_prefix'), $this );
 		return ob_get_clean();
 	}
 
@@ -162,9 +187,9 @@ class Module extends Object {
 		$suffix = '_view';
 		
 		if( ! isset($view) )
-			return $this->id . $suffix;
+			return $suffix;
 		else
-			return $this->format_hook( $view, $suffix );
+			return $this->format_hook( $suffix, $view );
 	}
 	
 	/**
@@ -208,6 +233,12 @@ class Module extends Object {
 			return '';
 	}
 	
+	
+	/**
+	 * 
+	 * 		S  E  A  R  C  H     A  P  I
+	 *
+	 */
 	
 	/**
 	 * Function that provides a framework for searching all modules based on a slug and a callback.

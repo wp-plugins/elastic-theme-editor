@@ -66,7 +66,7 @@ class Elastic {
 			return;
 		
 		foreach( $sidebars as $sidebar ) {
-			$settings = elastic_apply_atomic( $sidebar->id . '_sidebar', array(
+			$settings = $sidebar->apply_atomic( '_register_sidebars', array(
 				'name'          => $sidebar->id,
 				'id'            => $sidebar->id,
 				'before_widget' => '<li id="%1$s" class="widget-container %2$s">',
