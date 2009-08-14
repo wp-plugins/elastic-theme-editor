@@ -13,8 +13,8 @@ class Elastic {
 	function init() {
 		
 		// Set prefix for all hooks and ids.
-		$this->prefix = apply_filters('elastic_prefix','elastic');
-		$this->module_prefix = apply_filters( $this->prefix . '_module_prefix','module');
+		$this->prefix = apply_filters('elastic_prefix','elastic_');
+		$this->module_prefix = apply_filters( $this->prefix . 'module_prefix','module_');
 		
 		// Get theme and child theme data
 		$this->theme_data = apply_filters($this->prefix . 'theme_data', get_theme_data(TEMPLATEPATH . '/style.css') );
@@ -49,7 +49,7 @@ class Elastic {
 		//$this->context = $this->get_context();
 		
 		// Register sidebars for all pages (including admin)
-		add_action('init', array(&$this, 'register_sidebars') );
+		add_action('template_redirect', array(&$this, 'register_sidebars') );
 	}
 
 	function load_styles() {
@@ -66,14 +66,15 @@ class Elastic {
 			return;
 		
 		foreach( $sidebars as $sidebar ) {
-			register_sidebar( array(
+			$settings = elastic_apply_atomic( $sidebar->id . '_sidebar', array(
 				'name'          => $sidebar->id,
 				'id'            => $sidebar->id,
 				'before_widget' => '<li id="%1$s" class="widget-container %2$s">',
 				'after_widget'  => "</li>",
 				'before_title'  => '<h3 class="widget-title">',
 				'after_title'   => '</h3>',
-				));
+				), elastic_get('module_prefix') );
+			register_sidebar( $settings );
 		}
 	}
 	
@@ -183,12 +184,12 @@ function elastic_set($var, $value) {
  * @return void
  * @author Daryl Koopersmith
  */
-function elastic_do_atomic( $id ) {
+function elastic_do_atomic( $id, $prefix = NULL ) {
 	foreach(elastic_get('context') as $view) {
 		if( isset($view)) {
 			$args = func_get_args();
-			array_splice( $args, 0, 1, $view );
-			do_action_ref_array( elastic_format_hook($id, $view), $args );
+			array_splice( $args, 0, 2, $view );
+			do_action_ref_array( elastic_format_hook($id, $view, $prefix), $args );
 		}
 	}
 }
@@ -200,13 +201,13 @@ function elastic_do_atomic( $id ) {
  * @return void
  * @author Daryl Koopersmith
  */
-function elastic_do_atomic_specific( $id ) {
+function elastic_do_atomic_specific( $id, $prefix = NULL ) {
 	foreach( array_reverse( elastic_get('context') ) as $view ) {
 		if( isset($view)) {
-			$hook = elastic_format_hook( $id, $view );
+			$hook = elastic_format_hook( $id, $view, $prefix );
 			if( has_action($hook) ) {
 				$args = func_get_args();
-				array_splice( $args, 0, 1, $view );
+				array_splice( $args, 0, 2, $view );
 				do_action_ref_array( $hook, $args );
 				break;
 			}
@@ -227,10 +228,10 @@ function elastic_do_atomic_specific( $id ) {
  * @return void
  * @author Daryl Koopersmith
  */
-function elastic_apply_atomic( $id, $value ) {
+function elastic_apply_atomic( $id, $value, $prefix = NULL ) {
 	foreach(elastic_get('context') as $view) {
 		if( isset($view))
-			$value = apply_filters( elastic_format_hook($id, $view), $value );
+			$value = apply_filters( elastic_format_hook($id, $view, $prefix), $value );
 	}
 	return $value;
 }
@@ -243,10 +244,10 @@ function elastic_apply_atomic( $id, $value ) {
  * @return void
  * @author Daryl Koopersmith
  */
-function elastic_apply_atomic_specific( $id, $value ) {
+function elastic_apply_atomic_specific( $id, $value, $prefix = NULL ) {
 	foreach( array_reverse( elastic_get('context') ) as $view ) {
 		if( isset($view)) {
-			$hook = elastic_format_hook( $id, $view );
+			$hook = elastic_format_hook( $id, $view, $prefix );
 			if( has_filter($hook) ) {
 				return apply_filters($hook, $value);
 			}
@@ -259,12 +260,15 @@ function elastic_apply_atomic_specific( $id, $value ) {
  *
  * @param string $id
  * @param string $view
+ * @param string $prefix Optional. Default elastic prefix.
  * @return string Formatted hook title
  * @author Daryl Koopersmith
  */
-function elastic_format_hook( $id, $view = "" ) {
+function elastic_format_hook( $id, $view = "", $prefix = NULL ) {
+	if( ! isset($prefix) )
+		$prefix = elastic_get('prefix');
 	// If $view is empty (i.e. context['global']), don't add an extra underscore
-	return elastic_get('prefix') . (( ! empty($view) ) ? "_" . $view : "" ) . "_" . $id;
+	return $prefix . (( ! empty($view) ) ? $view . "_" : "" ) . $id;
 }
 
 ?>

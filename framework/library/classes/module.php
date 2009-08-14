@@ -9,6 +9,7 @@
 class Module extends Object {
 	var $id;
 	var $type;
+	var $prefix;
 	
 	/**
 	 * Constructs a new Module.
@@ -26,10 +27,11 @@ class Module extends Object {
 			
 		$this->id = $id;
 		$this->type = $type;
+		
 		$this->load_default_views();
 		
-		add_filter( elastic_format_hook( $this->id . '_wrap_before', 'admin' ), array(&$this, '_blank') );
-		add_filter( elastic_format_hook( $this->id . '_wrap_after', 'admin' ), array(&$this, '_blank') );
+		add_filter( $this->format_hook( 'admin', '_html_before' ), array(&$this, '_blank') );
+		add_filter( $this->format_hook( 'admin', '_html_after' ), array(&$this, '_blank') );
 	}
 	
 	/**
@@ -39,15 +41,28 @@ class Module extends Object {
 	 */
 	function run() {
 		$view = $this->do_view();
+		$prefix = elastic_get('module_prefix');
 		
 		// If view is empty, do not show module.
 		if ( ! empty( $view ) ) {
-			elastic_do_atomic( $this->id . '_before' );
-			echo elastic_apply_atomic( $this->id . '_wrap_before', $this->_wrap_before() );
-			echo elastic_apply_atomic( $this->id, $view );
-			echo elastic_apply_atomic( $this->id . '_wrap_after', $this->_wrap_after() );
-			elastic_do_atomic( $this->id . '_after' );
+			elastic_do_atomic( $this->id . '_before', $prefix );
+			echo elastic_apply_atomic( $this->id . '_html_before', $this->_html_before(), $prefix );
+			echo elastic_apply_atomic( $this->id, $view, $prefix );
+			echo elastic_apply_atomic( $this->id . '_html_after', $this->_html_after(), $prefix );
+			elastic_do_atomic( $this->id . '_after', $prefix );
 		}
+	}
+	
+	/**
+	 * Formats a hook for this module.
+	 *
+	 * @param string $view 
+	 * @param string $suffix 
+	 * @return void
+	 * @author Daryl Koopersmith
+	 */
+	function format_hook( $view = "", $suffix = "" ) {
+		return elastic_format_hook( $this->id . $suffix, $view, elastic_get('module_prefix')  );
 	}
 	
 	/**
@@ -99,23 +114,24 @@ class Module extends Object {
 	 */
 	function do_view() {
 		ob_start();
-		elastic_do_atomic_specific( $this->_format_view_hook(), $this );
+		elastic_do_atomic_specific( $this->_format_view_hook(), elastic_get('module_prefix'), $this );
 		return ob_get_clean();
 	}
 
 	/**
 	 * Loads and sets views from a folder.
+	 * File for global view is named index.php
 	 *
 	 * @param string $folder Absolute path to folder
 	 * @return void
 	 * @author Daryl Koopersmith
 	 */
-	function load_views_folder( $folder = TEMPLATEPATH ) {
+	function load_views_folder( $folder ) {
 		$path = trailingslashit( $folder ) . $this->type;
 
 		foreach( glob( $path . '/*.php') as $file ) {
 			$view = basename( $file, '.php');
-			$view = ( 'index' === $view ) ? '' : $view; // Global view is named global.php. Can't have a file named '.php'
+			$view = ( 'index' === $view ) ? '' : $view; // Global view is named index.php. Can't have a file named '.php'
 
 			$this->set_view( $view, $file, true );
 		}
@@ -143,12 +159,12 @@ class Module extends Object {
 	 * @author Daryl Koopersmith
 	 */
 	function _format_view_hook( $view = NULL ) {
-		$id = $this->id . '_view';
+		$suffix = '_view';
 		
 		if( ! isset($view) )
-			return $id;
+			return $this->id . $suffix;
 		else
-			return elastic_format_hook( $id, $view );
+			return $this->format_hook( $view, $suffix );
 	}
 	
 	/**
@@ -172,11 +188,11 @@ class Module extends Object {
 	 * @return void
 	 * @author Daryl Koopersmith
 	 */
-	function _wrap_before() {
-		return "<div id='{$this->id}' class='" . $this->type . "'>";
+	function _html_before() {
+		return "<div id='{$this->id}' class='{$this->type}'>";
 	}
 	
-	function _wrap_after() {
+	function _html_after() {
 		return "</div>";
 	}
 	
