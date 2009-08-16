@@ -300,4 +300,16 @@ function elastic_format_hook( $id, $view = "", $prefix = NULL ) {
 	return $prefix . (( ! empty($view) ) ? $view . "_" : "" ) . $id;
 }
 
+/**
+ * Returns a formatted hook title with the module prefix.
+ *
+ * @param string $id
+ * @param string $view
+ * @return string Formatted hook title
+ * @author Daryl Koopersmith
+ */
+function elastic_module_format_hook( $id, $view = "" ) {
+	return elastic_format_hook( $id, $view, elastic_get('module_prefix') );
+}
+
 ?>

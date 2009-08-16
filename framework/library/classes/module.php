@@ -67,7 +67,7 @@ class Module extends Object {
 	 * @author Daryl Koopersmith
 	 */
 	function format_hook( $suffix = "", $view = "" ) {
-		return elastic_format_hook( $this->id . $suffix, $view, elastic_get('module_prefix') );
+		return elastic_module_format_hook( $this->id . $suffix, $view );
 	}
 	
 	function do_atomic( $suffix = '' ) {
