@@ -18,6 +18,7 @@ input[type="text"], input[type="password"], textarea {
 pre, code {
 	font:0.9em Monaco, monospace;
 	line-height:1.4em;
+	color:#c33;
 }
 blockquote {
     color:#666;
