@@ -210,82 +210,129 @@ var g = {
 				}
 			},
 			'Blog Title'		: {
-				selector	: '#blog-title span',
+				selector	: '#blog-title a',
 				css			: {
-					'font-family'	: 'Arial, sans-serif',
-					'font-size'		: '3em',
-					'font-weight'	: 'bold',
-					'color'			: '#000000'
+					'font-family'		: 'Arial,sans-serif',
+					'font-size'			: '2.4em',
+					'font-weight'		: 'bold',
+					'line-height'		: '1.4em',
+				    'color'				: '#000',
+				    'text-decoration'	: 'none'
 				}
 			},
 			'Blog Description'	: {
-				selector	: 'h1',
+				selector	: '#blog-description',
 				css			: {
 					'font-family'	: 'Georgia, serif',
-					'font-size'		: '1.4em',
+					'font-size'		: '0.9em',
 					'font-style'	: 'italic',
-					'color'			: '#666666'
+					'color'			: '#666'
 				}
 			},
 			'Post Title'		: {
-				selector	: 'h2 h2.entry-title',
+				selector	: '.entry-title a',
 				css			: {
-					'font-family'	: 'Arial, sans-serif',
-					'font-size'		: '2.4em',
+					'font-family'		: 'Arial, sans-serif',
+					'font-size'			: '1.8em',
+					'line-height'		: '1.2em',
+					'font-weight'		: 'bold',
+					'color'				: '#000',
+				    'text-decoration'	: 'none'
+					
+				}
+			},
+			'Level 1 Heading'		: {
+				selector	: '.entry-content h1',
+				css			: {
+					'font-family'	: 'Arial,sans-serif',
+					'font-size'		: '1.4em',
 					'font-weight'	: 'bold',
-					'color'			: '#000000'
+					'color'			: '#000'
 				}
 			},
-			'Section Title'		: {
-				selector	: 'h3',
+			'Level 2 Heading'		: {
+				selector	: '.entry-content h2',
 				css			: {
-					'font-family'	: 'Georgia, serif',
-					'font-size'		: '1.8em',
-					'font-style'	: 'italic',
-					'color'			: '#666666'
+					'font-family'	: 'Arial,sans-serif',
+					'font-size'		: '1.2em',
+					'font-weight'	: 'bold',
+					'color'			: '#000'
 				}
 			},
-			'Subsection Title'	: {
-				selector	: 'h4',
+			'Level 3 Heading'	: {
+				selector	: '.entry-content h3',
 				css			: {
 					'font-family'	: 'Georgia, serif',
 					'font-size'		: '1.2em',
-					'font-variant'	: 'small-caps',
-					'color'			: '#666666'
+					'font-style'	: 'italic',
+					'color'			: '#000'
+				}
+			},
+			'Level 4 Heading'	: {
+				selector	: '.entry-content h4',
+				css			: {
+					'font-family'	: 'Arial,sans-serif',
+					'font-size'		: '1.2em',
+					'font-weight'	: 'bold',
+					'text-transform': 'uppercase',
+					'letter-spacing': '0.05em',
+					'color'			: '#000'
+				}
+			},
+			'Post Info' : {
+				selector	: '.entry-meta, .entry-meta a, .entry-utility, .entry-utility a',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '0.9em',
+					'color'			: '#666',
+					'line-height'	: '1.2em',
+					'font-style'	: 'italic',
+					'text-decoration': 'none'
+				}
+			},
+			'Widget Title'	: {
+				selector	: '.aside h3, .aside h3 a',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '1.2em',
+					'color'			: '#666',
+					'font-style'	: 'italic',
+					'text-decoration': 'none'
+				}
+			},
+			'Widget Text'	: {
+				selector	: '.aside',
+				css			: {
+					'font-family'	: 'Georgia, serif',
+					'font-size'		: '1.2em',
+					'color'			: '#666',
+					'text-decoration': 'none'
 				}
 			},
 			'Links'	: {
 				selector	: 'a',
 				css			: {
-					'font-family'	: 'Georgia, serif',
-					'font-size'		: '1.2em',
-					'font-variant'	: 'small-caps',
-					'color'			: '#666666'
+					'font-family'	: 'inherit',
+					'font-size'		: 'inherit',
+					'color'			: '#004B91'
 				}
 			},
-			'Lists'	: {
-				selector	: 'h4',
+			'Code'	: {
+				selector	: 'pre, code',
 				css			: {
-					'font-family'	: 'Georgia, serif',
-					'font-size'		: '1em',
-					'color'			: '#666666'
+					'font-family'	: 'Monaco, monospace',
+					'font-size'		: '0.9em',
+					'line-height'	: '1.4em',
+					'color'			: '#c33'
 				}
 			},
 			'Block Quote'	: {
-				selector	: 'h4',
+				selector	: 'blockquote',
 				css			: {
 					'font-family'	: 'Georgia, serif',
 					'font-size'		: '1em',
 					'font-style'	: 'italic',
-					'color'			: '#666666'
-				}
-			},
-			'Code'	: {
-				selector	: 'h4',
-				css			: {
-					'font-family'	: '"Courier New", serif',
-					'font-size'		: '1em',
-					'color'			: '#000000'
+					'color'			: '#666'
 				}
 			},
 		}
