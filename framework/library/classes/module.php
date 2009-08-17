@@ -153,12 +153,15 @@ class Module extends Object {
 	 */
 	function load_views_folder( $folder ) {
 		$path = trailingslashit( $folder ) . $this->type;
+		$files = glob( $path . '/*.php');
+		
+		if( $files ) {
+			foreach( $files as $file ) {
+				$view = basename( $file, '.php');
+				$view = ( 'index' === $view ) ? '' : $view; // Global view is named index.php. Can't have a file named '.php'
 
-		foreach( glob( $path . '/*.php') as $file ) {
-			$view = basename( $file, '.php');
-			$view = ( 'index' === $view ) ? '' : $view; // Global view is named index.php. Can't have a file named '.php'
-
-			$this->set_view( $view, $file, true );
+				$this->set_view( $view, $file, true );
+			}
 		}
 	}
 
