@@ -1433,6 +1433,9 @@ function irLoad() {
 	$('#ir-load-button-new').click(function(){
 		$('#tabs-inspector').tabs('select','#ir-new');
 	});
+	
+	if( '' === options )
+		$('#ir-load-button-new').click();
 }
 
 function irSave() {
