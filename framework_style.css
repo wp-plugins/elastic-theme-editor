@@ -8,9 +8,12 @@
 /* =Global Elements
 -------------------------------------------------------------- */
 
-body, input, textarea {
+body {
     font: 1.4em Georgia,serif;
     line-height:1.6em;
+}
+input[type="text"], input[type="password"], textarea {
+	font-family: Georgia,serif;
 }
 pre, code {
 	font:0.9em Monaco, monospace;
@@ -682,7 +685,7 @@ li.content-column {
     color: #FF4B33;
 }
 .aside h3 {
-    font-size:1em;
+    font-size:1.2em;
     font-style:italic;
     line-height:1.4em;
 }
