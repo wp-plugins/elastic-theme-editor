@@ -142,21 +142,6 @@
 							</div>
 
 							<div id="mod-typo-primary">
-								<!--
-								<table class="mod-typo-table">
-									<tr>
-										<td>Size</td>
-										<td>Text Color</td>
-										<td>Background Color</td>
-									</tr>
-									<tr>
-										<td><input id="mod-typo-size" class="el-input el-input-pixel"></input></td>
-										<td><input id="mod-typo-color-text" class="el-input el-input-color"></input></td>
-										<td><input id="mod-typo-color-background" class="el-input el-input-color"></input></td>
-									</tr>
-								</table>
-								-->
-								
 								<span>Size:</span> <input id="mod-typo-size" class="el-input el-input-pixel"></input>
 								<span>Text Color: #</span> <input id="mod-typo-color-text" class="el-input el-input-color"></input>
 								<span>Background: #</span> <input id="mod-typo-color-background" class="el-input el-input-color"></input>

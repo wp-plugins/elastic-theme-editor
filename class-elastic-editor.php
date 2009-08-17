@@ -60,6 +60,8 @@ class Elastic_Editor {
 	}
 
 	function init_scripts() {
+		global $current_user;
+		
 		$plugin = Elastic_Editor::get_folder();
 		
 		wp_enqueue_script('jquery');
@@ -88,9 +90,13 @@ class Elastic_Editor {
 				$state = file_get_contents( $state_path );
 
 
+		wp_get_current_user();
+		$user = $current_user->display_name;
+		
 		wp_localize_script('elastic-lib', 'input', array(
 				'state' => ( isset($state) ) ? $state : false,
-				'themes' => json_encode( Elastic_Editor::list_themes() )
+				'themes' => json_encode( Elastic_Editor::list_themes() ),
+				'user' => $user
 			));
 
 	}
