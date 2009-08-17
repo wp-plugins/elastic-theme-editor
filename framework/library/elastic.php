@@ -35,6 +35,7 @@ class Elastic {
 		$this->path['root'] = '';
 		$this->path['library'] = 'library';
 		$this->path['classes'] = trailingslashit( $this->path['library'] ) . 'classes';
+		$this->path['lib-css'] = trailingslashit( $this->path['library'] ) . 'css';
 		$this->path['fallback-views'] = trailingslashit( $this->path['library'] ) . 'fallback-views';
 		$this->path['custom'] = 'custom';
 		
@@ -67,9 +68,15 @@ class Elastic {
 	}
 
 	function load_styles() {
-		wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'uri') . '/style.css', false, '0.0.0.01');
+		global $wp_styles;
+		
+		wp_enqueue_style( $this->prefix . 'tripoli', elastic_get_path('lib-css', 'uri') . '/tripoli.css', false, '0.0.2.7');
+		wp_enqueue_style( $this->prefix . 'tripoli-ie', elastic_get_path('lib-css', 'uri') . '/tripoli.ie.css', false, '0.0.2.7');
+		$wp_styles->add_data( $this->prefix . 'tripoli-ie', 'conditional', 'gte IE 5');
+		
+		wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'uri') . '/style.css', false, '0.0.2.7');
 		if( elastic_get('has_child') )
-			wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'child', 'uri') . '/style.css', false, '0.0.0.01');
+			wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'child', 'uri') . '/style.css', false, '0.0.2.7');
 	}
 	
 	function register_sidebars() {
