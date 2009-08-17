@@ -1531,6 +1531,8 @@ function irNew() {
 			fixBlueprintCSS(24, 30, 10);
 		else
 			fixBlueprintCSS(a.cc, a.cw, a.gw);
+		
+		$('#tb-canvas-settings').click();
 	});
 	
 	function irNewGrid() {
