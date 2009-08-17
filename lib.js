@@ -232,7 +232,7 @@ var g = {
 				}
 			},
 			'Post Title'		: {
-				selector	: '.entry-title a',
+				selector	: '.entry-title, .entry-title a',
 				css			: {
 					'font-family'		: 'Arial, sans-serif',
 					'font-size'			: '1.8em',
