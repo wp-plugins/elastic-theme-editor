@@ -206,7 +206,9 @@ var g = {
 				selector	: 'body',
 				css			: {
 					'font-family'	: 'Georgia, serif',
-					'color'			: '#000000'
+					'color'			: '#000000',
+					'font-size'		: '1.4em',
+					'line-height'	: '1.6em'
 				}
 			},
 			'Blog Title'		: {
@@ -272,7 +274,7 @@ var g = {
 				selector	: '.entry-content h4',
 				css			: {
 					'font-family'	: 'Arial,sans-serif',
-					'font-size'		: '1.2em',
+					'font-size'		: '0.8em',
 					'font-weight'	: 'bold',
 					'text-transform': 'uppercase',
 					'letter-spacing': '0.05em',
@@ -304,7 +306,7 @@ var g = {
 				selector	: '.aside',
 				css			: {
 					'font-family'	: 'Georgia, serif',
-					'font-size'		: '1.2em',
+					'font-size'		: '0.9em',
 					'color'			: '#666',
 					'text-decoration': 'none'
 				}
@@ -1701,12 +1703,12 @@ function irTypography() {
 		'font-select'	: {
 			id	: 'mod-typo-font-select',
 			css : 'font-family',
-			def : ''
+			def : 'inherit'
 		},
 		'font-input'	: {
 			id	: 'mod-typo-font-input',
 			css : 'font-family',
-			def : '',
+			def : 'inherit',
 			vld	: 'font-input'
 		},
 		'size'	: {
@@ -2049,7 +2051,15 @@ function irTypography() {
 			} else {
 				obj[ property ] = value; // Update the css data
 			}
+
 			preview.css( property, value ); // Update the preview
+			if( 'Body Text' === preview.filter('.mod-typo-sample-preview').siblings('.mod-typo-sample-name').text() ) {
+				$('#mod-typo-samples ul li').add('#mod-typo-preview div').css(property, value);
+				if ( value.toString().match(/^.*em$/g) )
+					preview.css( property, '1em' );
+				else if ( value.toString().match(/^.*%$/g) )
+					preview.css( property, '100%' );
+			}
 		}
 	}
 

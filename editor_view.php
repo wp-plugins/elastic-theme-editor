@@ -127,7 +127,7 @@
 								<button id="mod-typo-reset" class="el-button ui-state-default ui-corner-all">Reset</button>
 							</div>
 							<div id="mod-typo-preview" class="ui-corner-all">
-								<textarea>The quick brown fox jumped over a lazy dog.</textarea>
+								<div><textarea>The quick brown fox jumped over a lazy dog.</textarea></div>
 								<span id="mod-typo-preview-options" class="ui-state-disabled">
 									<select class="el-select">
 										<option>Default Text</option>
