@@ -203,10 +203,9 @@ var g = {
 	canvas				: {
 		typo		: {
 			'Body Text'	: {
-				selector	: 'p',
+				selector	: 'body',
 				css			: {
 					'font-family'	: 'Georgia, serif',
-					'font-size'		: '1em',
 					'color'			: '#000000'
 				}
 			},

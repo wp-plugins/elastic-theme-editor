@@ -49,6 +49,8 @@ class Elastic_Customizer {
 		$out.= "\nTags: ";
 		$out.= $settings->tags;
 		$out.= "\n*/\n\n/* NOTE: THIS FILE IS ONLY USED FOR THEME INFO */";
+		
+		return $out;
 	}
 	
 	/**
