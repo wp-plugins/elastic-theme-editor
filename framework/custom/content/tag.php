@@ -1,8 +1,5 @@
 <?php // Credit: Shape Theme  ?>
 
-		<div id="container">	
-			<div id="content">
-			
 <?php the_post(); ?>			
 			
 				<h1 class="page-title"><?php _e( 'Tag Archives:', 'shape' ) ?> <span><?php single_tag_title() ?></span></h1>
@@ -53,6 +50,3 @@
 					<div class="nav-next"><?php previous_posts_link(__( 'Newer posts <span class="meta-nav">&raquo;</span>', 'shape' )) ?></div>
 				</div><!-- #nav-below -->
 <?php } ?>			
-			
-			</div><!-- #content -->		
-		</div><!-- #container -->

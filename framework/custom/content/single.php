@@ -1,7 +1,4 @@
 <?php // Credit: Shape Theme  ?>
-
-		<div id="container">	
-			<div id="content">
 			
 <?php the_post(); ?>
 
@@ -54,6 +51,3 @@
 				</div><!-- #nav-below -->					
 
 <?php comments_template('', true); ?>			
-			
-			</div><!-- #content -->		
-		</div><!-- #container -->

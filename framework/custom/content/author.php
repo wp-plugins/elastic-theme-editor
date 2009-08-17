@@ -1,8 +1,5 @@
 <?php // Credit: Shape Theme  ?>
 	
-		<div id="container">	
-			<div id="content">
-			
 <?php the_post(); ?>			
 			
 				<h1 class="page-title author"><?php printf( __( 'Author Archives: <span class="vcard">%s</span>', 'shape' ), "<a class='url fn n' href='$authordata->user_url' title='$authordata->display_name' rel='me'>$authordata->display_name</a>" ) ?></h1>
@@ -53,5 +50,3 @@
 				</div><!-- #nav-below -->
 <?php } ?>			
 			
-			</div><!-- #content -->		
-		</div><!-- #container -->

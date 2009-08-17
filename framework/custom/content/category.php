@@ -1,8 +1,5 @@
 <?php // Credit: Shape Theme  ?>
 	
-		<div id="container">	
-			<div id="content">
-			
 <?php the_post(); ?>			
 			
 				<h1 class="page-title"><?php _e( 'Category Archives:', 'shape' ) ?> <span><?php single_cat_title() ?></span></span></h1>
@@ -51,5 +48,3 @@
 				</div><!-- #nav-below -->
 <?php } ?>			
 			
-			</div><!-- #content -->		
-		</div><!-- #container -->

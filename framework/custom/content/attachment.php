@@ -1,8 +1,5 @@
 <?php // Credit: Shape Theme  ?>
 	
-		<div id="container">	
-			<div id="content">
-			
 <?php the_post(); ?>
 
 				<h1 class="page-title"><a href="<?php echo get_permalink($post->post_parent) ?>" title="<?php printf( __( 'Return to %s', 'shape' ), wp_specialchars( get_the_title($post->post_parent), 1 ) ) ?>" rev="attachment"><span class="meta-nav">&laquo; </span><?php echo get_the_title($post->post_parent) ?></a></h1>
@@ -58,6 +55,3 @@
 				</div><!-- #post-<?php the_ID(); ?> -->						
 
 <?php comments_template(); ?>			
-			
-			</div><!-- #content -->		
-		</div><!-- #container -->

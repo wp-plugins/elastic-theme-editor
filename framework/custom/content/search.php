@@ -1,7 +1,4 @@
 <?php // Credit: Shape Theme  ?>
-
-		<div id="container">	
-			<div id="content">
 			
 <?php if ( have_posts() ) : ?>
 				
@@ -66,6 +63,3 @@
 				</div>
 
 <?php endif; ?>			
-
-			</div><!-- #content -->		
-		</div><!-- #container -->

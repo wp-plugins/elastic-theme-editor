@@ -1,8 +1,5 @@
 <?php // Credit: Shape Theme  ?>
 	
-		<div id="container">	
-			<div id="content">
-				
 				<div id="post-0" class="post error404 not-found">
 					<h1 class="entry-title"><?php _e( 'Not Found', 'shape' ); ?></h1>
 					<div class="entry-content">
@@ -11,5 +8,3 @@
 					</div><!-- .entry-content -->
 				</div><!-- #post-0 -->
 
-			</div><!-- #content -->		
-		</div><!-- #container -->
