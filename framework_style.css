@@ -69,13 +69,11 @@ a:hover {
 #branding {
     padding:6.0em 0 3.0em 0;
 }
-#blog-title {
-    font-family:Arial,sans-serif;
-    font-size:2.4em;
-    font-weight:bold;
-    line-height:1.4em;
-}
 #blog-title a {
+	font-family:Arial,sans-serif;
+	font-size:2.4em;
+	font-weight:bold;
+	line-height:1.4em;
     color:#000;
     text-decoration:none;
 }
@@ -251,14 +249,12 @@ ul.sf-menu li li li.sfHover ul {
     margin:0 0 4.4em 0;
     padding:1.4em 1.4em 0 1.4em;
 }
-.entry-title {
-    font-family:Arial,sans-serif;
-    font-size:1.8em;
-    font-weight:bold;
-    line-height:1.2em;
-    padding:0 0 0.2em 0;
-}
 .entry-title a {
+	font-family:Arial,sans-serif;
+	font-size:1.8em;
+	font-weight:bold;
+	line-height:1.2em;
+	padding:0 0 0.2em 0;
     color:#000;
     text-decoration:none;
 }
@@ -266,11 +262,12 @@ ul.sf-menu li li li.sfHover ul {
 .entry-title a:hover {
     color: #FF4B33;
 }
-.entry-meta {
+.entry-meta, .entry-meta a {
     color:#666;
     font-size:0.9em;
     font-style:italic;
     line-height:1.2em;
+    text-decoration:none;
 }
 .entry-meta .author {
 }
@@ -281,8 +278,7 @@ ul.sf-menu li li li.sfHover ul {
     text-transform:uppercase;
 }
 .entry-meta a {
-    color:#666;
-    text-decoration:none;
+	font-size: 1em;
 }
 .entry-meta a:active,
 .entry-meta a:hover {
@@ -299,13 +295,21 @@ ul.sf-menu li li li.sfHover ul {
 .entry-content {
     padding:1.4em 0 0 0;
 }
-.entry-content h1,
+
+.entry-content h1 {
+    font-family:Arial,sans-serif;
+    font-size:1.4em;
+    font-weight:bold;
+    padding:1.2em 0 0.9em 0;
+}
+
 .entry-content h2 {
     font-family:Arial,sans-serif;
     font-size:1.2em;
     font-weight:bold;
     padding:1.2em 0 0.9em 0;
 }
+
 .entry-content h3 {
     font-size:1.2em;
     font-style:italic;
@@ -324,16 +328,19 @@ ul.sf-menu li li li.sfHover ul {
 .entry-content embed {
     margin:0 0 1.4em 0;
 }
-.entry-utility {
+.entry-utility, .entry-utility a {
     color:#666;
     font-size:0.9em;
     line-height:1.2em;
     margin:0 0 3.0em 0;
-}
-.entry-utility a {
-    color:#666;
     font-style:italic;
     text-decoration:none;
+}
+.entry-utility-prep {
+	font-style: normal;
+}
+.entry-utility a {
+	font-size: 1em;
 }
 .entry-utility a:active,
 .entry-utility a:hover {
@@ -685,12 +692,10 @@ li.content-column {
 .aside a:hover {
     color: #FF4B33;
 }
-.aside h3 {
+.aside h3, .aside h3 a {
     font-size:1.2em;
     font-style:italic;
-    line-height:1.4em;
-}
-.aside h3 a {
+    line-height:1.8em;
     text-decoration:none;
 }
 .aside caption {
