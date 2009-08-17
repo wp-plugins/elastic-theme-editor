@@ -1479,7 +1479,19 @@ function irSave() {
 		
 		options.name = sanitizeName( name ).replace(/[/][^/]+$/g, ''); // Sanitize name and remove path suffix
 		options.path = path;
-		generateOutput( options, g.ir.fn.canvasLoadEnd );
+		var output = generateOutput( options );
+		$.ajax({
+			data : output,
+			complete : function() {
+				g.ir.fn.canvasLoadEnd();
+			},
+			type : "POST",
+			url : 'admin-ajax.php',
+			success : function(){
+			},
+			error : function(){
+			}
+		});
 	});
 	
 	$('#tb-save').click(function(){
@@ -2537,10 +2549,8 @@ function getDroppableDefaults() {
 					
 --------------------------------------------------- */
 
-function generateOutput( options, callback ) {
+function generateOutput( options ) {
 	var settings = $.extend( true, {}, g.theme, options );
-	
-	callback = callback || function(){};
 	
 	
 	$('#outputWrapper').remove();
@@ -2609,18 +2619,15 @@ function generateOutput( options, callback ) {
 	var layout = outputToJSON();
 	console.log('JSON OUTPUT: ',layout);
 	
-	$.post('admin-ajax.php', {
+	
+	return {
 		action : 'process_theme',
 		settings : JSON.stringify( settings ),
 		structure : css,
 		layout : JSON.stringify( layout ),
 		state : JSON.stringify( saveState() ),
 		style : generateStyleCss()
-	}, function(){
-		callback();
-	});
-	
-
+	};
 }
 
 function generateStyleCss() {
