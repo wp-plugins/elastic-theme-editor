@@ -265,9 +265,19 @@ function elastic_do_atomic_specific( $id, $prefix = NULL ) {
  * @author Daryl Koopersmith
  */
 function elastic_apply_atomic( $id, $value, $prefix = NULL ) {
+	$preset_args = 3;
+	
 	foreach(elastic_get('context') as $view) {
-		if( isset($view))
-			$value = apply_filters( elastic_format_hook($id, $view, $prefix), $value );
+		if( isset($view)) {
+			$output_args = array( elastic_format_hook($id, $view, $prefix), $value );
+			if( func_num_args() > $preset_args ) {
+				$args = func_get_args();
+				array_splice( $args, 0, $preset_args, $output_args );
+				$value = call_user_func_array('apply_filters', $args);
+			} else {
+				$value = apply_filters( $output_args[0], $output_args[1] );
+			}
+		}
 	}
 	return $value;
 }
@@ -281,11 +291,20 @@ function elastic_apply_atomic( $id, $value, $prefix = NULL ) {
  * @author Daryl Koopersmith
  */
 function elastic_apply_atomic_specific( $id, $value, $prefix = NULL ) {
+	$preset_args = 3;
+	
 	foreach( array_reverse( elastic_get('context') ) as $view ) {
 		if( isset($view)) {
 			$hook = elastic_format_hook( $id, $view, $prefix );
 			if( has_filter($hook) ) {
-				return apply_filters($hook, $value);
+				$output_args = array( $hook, $value );
+				if( func_num_args() > $preset_args ) {
+					$args = func_get_args();
+					array_splice( $args, 0, $preset_args, $output_args );
+					return call_user_func_array('apply_filters', $args);
+				} else {
+					return apply_filters( $output_args[0], $output_args[1] );
+				}
 			}
 		}
 	}

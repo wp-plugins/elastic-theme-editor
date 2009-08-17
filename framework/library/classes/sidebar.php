@@ -5,6 +5,7 @@ class Sidebar extends Module {
 		parent::__construct($name, $type);
 		
 		add_action( $this->format_hook('_register_sidebars', 'admin'), array(&$this, '_admin_register_sidebars') );
+		add_action( $this->format_hook('_register_sidebars', ''), array(&$this, '_admin_register_sidebars') );
 	}
 	
 	/**

@@ -71,16 +71,52 @@ class Module extends Object {
 	}
 	
 	function do_atomic( $suffix = '' ) {
-		elastic_do_atomic( $this->id . $suffix, elastic_get('module_prefix') );
+		$preset_args = 1;
+		$output_args = array( $this->id . $suffix, elastic_get('module_prefix') );
+		
+		if( func_num_args() > $preset_args ) {
+			$args = func_get_args();
+			array_splice( $args, 0, $preset_args, $output_args );
+			call_user_func_array('elastic_do_atomic', $args);
+		} else {
+			elastic_do_atomic( $output_args[0], $output_args[1] );
+		}
 	}
 	function do_atomic_specific( $suffix = '' ) {
-		elastic_do_atomic_specific( $this->id . $suffix, elastic_get('module_prefix') );
+		$preset_args = 1;
+		$output_args = array( $this->id . $suffix, elastic_get('module_prefix') );
+		
+		if( func_num_args() > $preset_args ) {
+			$args = func_get_args();
+			array_splice( $args, 0, $preset_args, $output_args );
+			call_user_func_array('elastic_do_atomic_specific', $args);
+		} else {
+			elastic_do_atomic_specific( $output_args[0], $output_args[1] );
+		}
 	}
 	function apply_atomic( $suffix = '', $value ) {
-		return elastic_apply_atomic( $this->id . $suffix, $value, elastic_get('module_prefix') );
+		$preset_args = 2;
+		$output_args = array( $this->id . $suffix, $value, elastic_get('module_prefix') );
+		
+		if( func_num_args() > $preset_args ) {
+			$args = func_get_args();
+			array_splice( $args, 0, $preset_args, $output_args );
+			return call_user_func_array('elastic_apply_atomic', $args);
+		} else {
+			return elastic_apply_atomic( $output_args[0], $output_args[1], $output_args[2] );
+		}
 	}
 	function apply_atomic_specific( $suffix = '', $value ) {
-		return elastic_apply_atomic_specific( $this->id . $suffix, $value, elastic_get('module_prefix') );
+		$preset_args = 2;
+		$output_args = array( $this->id . $suffix, $value, elastic_get('module_prefix') );
+		
+		if( func_num_args() > $preset_args ) {
+			$args = func_get_args();
+			array_splice( $args, 0, $preset_args, $output_args );
+			return call_user_func_array('elastic_apply_atomic_specific', $args);
+		} else {
+			return elastic_apply_atomic_specific( $output_args[0], $output_args[1], $output_args[2] );
+		}
 	}
 	
 	
@@ -139,7 +175,7 @@ class Module extends Object {
 	 */
 	function do_view() {
 		ob_start();
-		$this->do_atomic_specific( $this->_format_view_hook(), elastic_get('module_prefix'), $this );
+		$this->do_atomic_specific( $this->_format_view_hook(), $this );
 		return ob_get_clean();
 	}
 
