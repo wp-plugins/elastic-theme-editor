@@ -249,7 +249,7 @@ ul.sf-menu li li li.sfHover ul {
     margin:0 0 4.4em 0;
     padding:1.4em 1.4em 0 1.4em;
 }
-.entry-title a {
+.entry-title, .entry-title a {
 	font-family:Arial,sans-serif;
 	font-size:1.8em;
 	font-weight:bold;
@@ -257,6 +257,9 @@ ul.sf-menu li li li.sfHover ul {
 	padding:0 0 0.2em 0;
     color:#000;
     text-decoration:none;
+}
+.entry-title a {
+	font-size: 1em;
 }
 .entry-title a:active,
 .entry-title a:hover {
