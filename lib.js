@@ -124,7 +124,18 @@ var g = {
 				load.hide().css('margin-top', dist +'px').fadeIn(200);
 			},
 			loadingHide		: function() {
-				$('#inspector-loading').fadeOut(400);
+				$('#inspector-loading-info').queue(function(){
+					$('#inspector-loading').fadeOut(400).queue(function(){
+						g.ir.fn.loadingMessage();
+						$(this).dequeue();
+					});
+					$(this).dequeue();
+				})
+			},
+			loadingMessage	: function( content, duration ) {
+				content = content || 'Working...';
+				duration = duration || 0;
+				$('#inspector-loading-info').text( content ).wait( duration );
 			},
 			getTabAnchor	: function( id, tabsId ) {
 				tabsId = tabsId || '#tabs-inspector';
@@ -1200,7 +1211,7 @@ function initDialogs() {
 					dialog.fadeTo(200, 1);
 			}
 		).attr('id','inspector')
-		.append('<div id="inspector-loading"><div class="ui-corner-all">Working...</div></div>');
+		.append('<div id="inspector-loading"><div id="inspector-loading-info" class="ui-corner-all">Working...</div></div>');
 		
 		$('#inspector-loading').hide();
 		
@@ -1488,8 +1499,10 @@ function irSave() {
 			type : "POST",
 			url : 'admin-ajax.php',
 			success : function(){
+				g.ir.fn.loadingMessage('Saved!', 500);
 			},
 			error : function(){
+				g.ir.fn.loadingMessage('Error saving theme.', 3000);
 			}
 		});
 	});
