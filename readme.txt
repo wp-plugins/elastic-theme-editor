@@ -64,6 +64,7 @@ Using an Elastic theme is just like using any other theme:
 * Hooks API made more robust
 * PHP warnings from framework removed
 * Workflow changes to editor
+* Added default CSS reset (based on tripoli)
 
 = 0.0.2.6 =
 * Typography still renders incorrectly. Will be fixed in next release.
