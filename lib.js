@@ -1495,6 +1495,7 @@ function irSave() {
 			data : output,
 			complete : function() {
 				g.ir.fn.canvasLoadEnd();
+				$('#tb-canvas-settings').click();
 			},
 			type : "POST",
 			url : 'admin-ajax.php',
