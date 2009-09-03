@@ -9,6 +9,7 @@
 class Module extends Object {
 	var $id;
 	var $type;
+	var $classes;
 	
 	/**
 	 * Constructs a new Module.
@@ -26,6 +27,8 @@ class Module extends Object {
 			
 		$this->id = $id;
 		$this->type = $type;
+		$this->classes = array();
+		$this->add_class( $this->type );
 		
 		$this->load_default_views();
 		
@@ -119,6 +122,24 @@ class Module extends Object {
 		}
 	}
 	
+	/**
+	 * 
+	 * 		C  L  A  S  S  E  S     A  P  I
+	 *
+	 */
+
+	function add_class( $class ) {
+		$this->classes[$class] = true;
+	}
+	
+	function has_class( $class ) {
+		return isset( $this->classes[$class] );
+	}
+	
+	function remove_class( $class ) {
+		if ( $this->has_class( $class ) )
+			unset( $this->classes[$class] );
+	}
 	
 	/**
 	 * 
@@ -252,7 +273,7 @@ class Module extends Object {
 	 * @author Daryl Koopersmith
 	 */
 	function _html_before() {
-		return "<div id='{$this->id}' class='{$this->type}'>";
+		return "<div id='{$this->id}' class='" . join( ' ', array_keys( $this->classes ) ) . "'>";
 	}
 	
 	function _html_after() {
