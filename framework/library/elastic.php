@@ -20,6 +20,15 @@ class Elastic {
 		$this->path['lib-css'] = trailingslashit( $this->path['library'] ) . 'css';
 		$this->path['fallback-views'] = trailingslashit( $this->path['library'] ) . 'fallback-views';
 		$this->path['custom'] = 'custom';
+				
+		// Load classes
+		require_once( elastic_get_path('classes') . '/object.php');
+		require_once( elastic_get_path('classes') . '/module.php');
+		require_once( elastic_get_path('classes') . '/group.php');
+		require_once( elastic_get_path('classes') . '/selection.php');
+		require_once( elastic_get_path('classes') . '/sidebar.php');
+		require_once( elastic_get_path('classes') . '/header.php');
+		require_once( elastic_get_path('classes') . '/content.php');
 		
 		// Load user's functions.php
 		$functions = TEMPLATEPATH . '/custom/functions.php';
@@ -38,15 +47,6 @@ class Elastic {
 		// Get theme and child theme data
 		$this->theme_data = apply_filters($this->prefix . 'theme_data', get_theme_data(TEMPLATEPATH . '/style.css') );
 		$this->child_data = apply_filters($this->prefix . 'child_data', get_theme_data(STYLESHEETPATH . '/style.css') );
-		
-		// Load classes
-		require_once( elastic_get_path('classes') . '/object.php');
-		require_once( elastic_get_path('classes') . '/module.php');
-		require_once( elastic_get_path('classes') . '/group.php');
-		require_once( elastic_get_path('classes') . '/selection.php');
-		require_once( elastic_get_path('classes') . '/sidebar.php');
-		require_once( elastic_get_path('classes') . '/header.php');
-		require_once( elastic_get_path('classes') . '/content.php');
 		
 		// Get layout
 		require_once( elastic_get_path('custom', (elastic_get('has_child')) ? 'child' : 'theme' ) . '/layout.php');
