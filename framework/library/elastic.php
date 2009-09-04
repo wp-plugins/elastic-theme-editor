@@ -13,6 +13,14 @@ class Elastic {
 	function init() {
 		$this->has_child = ( STYLESHEETPATH !== TEMPLATEPATH );
 		
+		// Set paths
+		$this->path['root'] = '';
+		$this->path['library'] = 'library';
+		$this->path['classes'] = trailingslashit( $this->path['library'] ) . 'classes';
+		$this->path['lib-css'] = trailingslashit( $this->path['library'] ) . 'css';
+		$this->path['fallback-views'] = trailingslashit( $this->path['library'] ) . 'fallback-views';
+		$this->path['custom'] = 'custom';
+		
 		// Load user's functions.php
 		$functions = TEMPLATEPATH . '/custom/functions.php';
 		if( file_exists( $functions ) )
@@ -30,14 +38,6 @@ class Elastic {
 		// Get theme and child theme data
 		$this->theme_data = apply_filters($this->prefix . 'theme_data', get_theme_data(TEMPLATEPATH . '/style.css') );
 		$this->child_data = apply_filters($this->prefix . 'child_data', get_theme_data(STYLESHEETPATH . '/style.css') );
-		
-		// Set paths
-		$this->path['root'] = '';
-		$this->path['library'] = 'library';
-		$this->path['classes'] = trailingslashit( $this->path['library'] ) . 'classes';
-		$this->path['lib-css'] = trailingslashit( $this->path['library'] ) . 'css';
-		$this->path['fallback-views'] = trailingslashit( $this->path['library'] ) . 'fallback-views';
-		$this->path['custom'] = 'custom';
 		
 		// Load classes
 		require_once( elastic_get_path('classes') . '/object.php');
