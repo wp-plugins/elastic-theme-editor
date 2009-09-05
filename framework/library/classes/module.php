@@ -358,7 +358,7 @@ class Module extends Object {
 	 * @author Daryl Koopersmith
 	 */
 	function _get_module( $id, $ptr ) {
-		return ( $id === $ptr->$id );
+		return ( $id === $ptr->id );
 	}
 	
 	/**
