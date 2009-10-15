@@ -141,12 +141,20 @@ class Elastic_Editor {
 	}
 	
 	function elastic_load_state() {
+		global $wp_db_version;
+		
 		$name = $_POST["name"];
 		$themes = get_themes();
 		
 		foreach($themes as $theme) {
 			if ( $theme['Name'] === $name ) {
-				echo file_get_contents( WP_CONTENT_DIR . trailingslashit( $theme['Stylesheet Dir'] ) . 'state.php' );
+				if ( version_compare( $wp_db_version, 12023 ) === 1 ) {
+					// In 2.9, stylesheet dir is changed to include WP_CONTENT_DIR
+					echo file_get_contents( trailingslashit( $theme['Stylesheet Dir'] ) . 'state.php' );	
+				} else {
+					// In 2.8, stylesheet dir does not include WP_CONTENT_DIR
+					echo file_get_contents( WP_CONTENT_DIR . trailingslashit( $theme['Stylesheet Dir'] ) . 'state.php' );
+				}
 				break;
 			}
 		}
