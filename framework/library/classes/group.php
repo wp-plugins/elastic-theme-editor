@@ -1,12 +1,12 @@
 <?php
 /**
  * Groups contain multiple modules, and render only those modules.
- * Their views cannot be set.
+ * A group's views cannot be set.
  * 
- * TODO: add children manipulation functions
- *
- * @package default
+ * @package Elastic
  * @author Daryl Koopersmith
+ * 
+ * @todo add children manipulation functions
  */
 class Group extends Module {
 	var $children;

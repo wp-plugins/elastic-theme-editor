@@ -1,9 +1,8 @@
 <?php
-
 /**
  * A Selection is an anonymous Group meant for manipulating modules. 
  *
- * @package default
+ * @package Elastic
  * @author Daryl Koopersmith
  */
 class Selection extends Group {

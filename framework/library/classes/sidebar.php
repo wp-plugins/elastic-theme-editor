@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * A module that registers a widgetized sidebar.
+ * 
+ * Note that to prevent naming conflicts in the WordPress Widget Admin,
+ * the elastic prefix (default: 'elastic_') is added to the sidebar id.
+ *
+ * @package Elastic
+ * @author Daryl Koopersmith
+ */
 class Sidebar extends Module {
 	function __construct($name, $type = NULL) {
 		parent::__construct($name, $type);

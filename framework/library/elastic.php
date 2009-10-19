@@ -1,15 +1,84 @@
 <?php
+/**
+ * Elastic API: Access to atomic hook functions, context, paths, and Elastic data (prefixes, theme data).
+ *
+ * @package Elastic
+ * @author Daryl Koopersmith
+ */
+/**
+ * Handles internal framework operation. Do not access directly. Instead, use {@link elastic_get()} and {@link elastic_set()}.
+ *
+ * @author Daryl Koopersmith
+ */
 class Elastic {
 	var $layout;
+	/**
+	 * An array containing the context of a page.
+	 * 
+	 * Set through {}
+	 *
+	 * @var array
+	 */
 	var $context;
+	/**
+	 * Contains the prefix used for most Elastic hooks and ids. Default 'elastic_'.
+	 * Can be overridden through filter 'elastic_prefix'.
+	 * 
+	 * Warning: Override with care! The names other filters will change when Elastic::$prefix is overridden.
+	 *
+	 * @var string
+	 */
 	var $prefix;
+	/**
+	 * Contains the prefix used for all Modules. Default 'module_'.
+	 * Can be overridden through filter 'elastic_module_prefix'.
+	 *
+	 * @var string
+	 */
 	var $module_prefix;
+	/**
+	 * An array of theme data obtained through {@link get_theme_data()}.
+	 * Filtered hook: 'elastic_theme_data'.
+	 *
+	 * @var array
+	 */
 	var $theme_data;
+	/**
+	 * An array of child theme data obtained through {@link get_theme_data()}.
+	 * Filtered hook: 'elastic_child_data'.
+	 *
+	 * @var array
+	 */
 	var $child_data;
+	/**
+	 * Are we running a child theme?
+	 *
+	 * @var boolean
+	 */
 	var $has_child;
+	/**
+	 * An array of module names.
+	 *
+	 * @var array
+	 * @deprecated
+	 * @todo Double check if Elastic::module_types is used anywhere.
+	 */
 	var $module_types = array( 'header', 'content', 'sidebar' );
+	
+	/**
+	 * Contains an array of relative paths. Access paths through {@link elastic_get_path()}.
+	 *
+	 * @var array
+	 */
 	var $path = array();
 	
+	/**
+	 * Initializes and sets hooks for the Elastic framework
+	 *
+	 * @access private
+	 * @return void
+	 * @author Daryl Koopersmith
+	 */
 	function init() {
 		$this->has_child = ( STYLESHEETPATH !== TEMPLATEPATH );
 		
@@ -67,6 +136,15 @@ class Elastic {
 			add_action('template_redirect', array(&$this, 'register_sidebars') );
 	}
 
+	/**
+	 * Loads user stylesheets (both parent and child theme) and base CSS reset.
+	 * 
+	 * CSS reset is a customized version of Tripoli.
+	 *
+	 * @access private
+	 * @return void
+	 * @author Daryl Koopersmith
+	 */
 	function load_styles() {
 		global $wp_styles;
 		
@@ -79,6 +157,13 @@ class Elastic {
 			wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'child', 'uri') . '/style.css', false, '0.0.2.7');
 	}
 	
+	/**
+	 * Registers all sidebar modules.
+	 *
+	 * @access private
+	 * @return void
+	 * @author Daryl Koopersmith
+	 */
 	function register_sidebars() {
 		$sidebars = elastic_get('layout');
 		$sidebars = $sidebars->get_modules_by_type('sidebar');
@@ -100,10 +185,12 @@ class Elastic {
 	}
 	
 	/**
-	 * Retrieve the context of the current template.
-	 * Credit: Chris Jean & Ptah Dunbar
+	 * Retrieve the context of the current page.
 	 *
+	 * @access private
+	 * @todo Potentially make this function public, and take in an optional $wp_query variable?
 	 * @return array $context
+	 * @author Chris Jean, Ptah Dunbar, Daryl Koopersmith
 	 */
 	function get_context() {
 		global $wp_query;
@@ -181,6 +268,14 @@ class Elastic {
 $elastic = new Elastic();
 $elastic->init();
 
+/**
+ * Gets data within the global  {@link Elastic} instance ($elastic).
+ *
+ * @param string $var
+ * @global Elastic $elastic
+ * @return mixed Requested variable ($elastic->var), or false.
+ * @author Daryl Koopersmith
+ */
 function elastic_get($var) {
     global $elastic;
     
@@ -190,13 +285,35 @@ function elastic_get($var) {
     return false;
 }
 
+/**
+ * Sets data within the global {@link Elastic} instance ($elastic).
+ *
+ * @param string $var Variable name to set.
+ * @param string $value Value to be set.
+ * @global Elastic $elastic
+ * @return void
+ * @author Daryl Koopersmith
+ */
 function elastic_set($var, $value) {
 	global $elastic;
 	
 	$elastic->$var = $value;
 }
 
-function elastic_get_path( $name, $arg1 = 'theme', $arg2 = 'abs' ) {
+/**
+ * Returns a path within the Elastic framework.
+ * Arguments specify absolute or URI, and theme or child theme.
+ * 
+ * Takes a path $name, then up to two optional arguments: ['abs' or 'uri'] and ['theme' or 'child'].
+ * Defaults to 'abs' and 'theme'.
+ * 
+ * @param string $name The name of the path requested. A common value is 'custom'.
+ * @param string $arg1 Optional. Takes ['abs' or 'uri'] or ['theme' or 'child']
+ * @param string $arg2 Optional. Takes ['abs' or 'uri'] or ['theme' or 'child']
+ * @return string Requested path, or false.
+ * @author Daryl Koopersmith
+ */
+function elastic_get_path( $name, $arg1 = 'abs', $arg2 = 'theme' ) {
 	$path = elastic_get('path');
 	
 	if( ! isset($path[ $name ]) )
@@ -212,11 +329,12 @@ function elastic_get_path( $name, $arg1 = 'theme', $arg2 = 'abs' ) {
 }
 
 /**
- * Calls do_action at all context levels.
+ * Calls {@link do_action()} at all context levels.
  * Actions are run in the order: global, abstract, general, specific.
  * Actions are not run for null contexts.
  * 
  * @param string $id The id of the hook.
+ * @todo Document how the hooks API can handle any number of variables.
  * @return void
  * @author Daryl Koopersmith
  */
@@ -231,9 +349,13 @@ function elastic_do_atomic( $id, $prefix = NULL ) {
 }
 
 /**
- * Calls do_action at the most specific atomic level with a registered action.
+ * Calls {@link do_action()} at the most specific atomic level with a registered action.
+ * 
+ * For example, if actions were registered at the 'global' and 'general' levels,
+ * only the 'general' action would be called.
  *
  * @param string $id The id of the hook.
+ * @param string $prefix Optional. Defaults to {@link Elastic::$prefix}.
  * @return void
  * @author Daryl Koopersmith
  */
@@ -252,15 +374,16 @@ function elastic_do_atomic_specific( $id, $prefix = NULL ) {
 }
 
 /**
- * Calls apply_filters at all context levels.
+ * Calls {@link apply_filters()} at all context levels.
  * Filters are applied in the order: global, abstract, general, specific.
  * Filters are not applied to null contexts.
  * 
- * $value is updated every time apply_filters is run.
- * (i.e. apply_filters at the 'specific' level receives any changes made at the 'global' level).
+ * $value is updated every time {@link apply_filters()} is run.
+ * (i.e. {@link apply_filters()} at the 'specific' level receives any changes made at the 'global' level).
  * 
  * @param string $id The id of the hook.
  * @param mixed $value The value to be filtered.
+ * @param string $prefix Optional. Defaults to {@link Elastic::$prefix}.
  * @return void
  * @author Daryl Koopersmith
  */
@@ -283,10 +406,14 @@ function elastic_apply_atomic( $id, $value, $prefix = NULL ) {
 }
 
 /**
- * Calls apply_action at the most specific atomic level with a registered action.
+ * Calls {@link apply_filters()} at the most specific atomic level with a registered action.
  *
+ * For example, if filters were registered at the 'global' and 'general' levels,
+ * only the 'general' filter would be called.
+ * 
  * @param string $id The id of the hook.
  * @param mixed $value The value to be filtered.
+ * @param string $prefix Optional. Defaults to {@link Elastic::$prefix}.
  * @return void
  * @author Daryl Koopersmith
  */
@@ -315,15 +442,15 @@ function elastic_apply_atomic_specific( $id, $value, $prefix = NULL ) {
  *
  * @param string $id
  * @param string $view
- * @param string $prefix Optional. Default elastic prefix.
+ * @param string $prefix Optional. Defaults to {@link Elastic::$prefix}.
  * @return string Formatted hook title
  * @author Daryl Koopersmith
  */
-function elastic_format_hook( $id, $view = "", $prefix = NULL ) {
+function elastic_format_hook( $id, $view = '', $prefix = NULL ) {
 	if( ! isset($prefix) )
 		$prefix = elastic_get('prefix');
 	// If $view is empty (i.e. context['global']), don't add an extra underscore
-	return $prefix . (( ! empty($view) ) ? $view . "_" : "" ) . $id;
+	return $prefix . (( ! empty($view) ) ? $view . "_" : '' ) . $id;
 }
 
 /**
@@ -334,7 +461,7 @@ function elastic_format_hook( $id, $view = "", $prefix = NULL ) {
  * @return string Formatted hook title
  * @author Daryl Koopersmith
  */
-function elastic_module_format_hook( $id, $view = "" ) {
+function elastic_module_format_hook( $id, $view = '' ) {
 	return elastic_format_hook( $id, $view, elastic_get('module_prefix') );
 }
 

@@ -5,7 +5,6 @@
  * @package Elastic Framework
  * @author Daryl Koopersmith
  **/
-
 class Module extends Object {
 	var $id;
 	var $type;
@@ -73,6 +72,14 @@ class Module extends Object {
 		return elastic_module_format_hook( $this->id . $suffix, $view );
 	}
 	
+	/**
+	 * An interface to {@link elastic_do_atomic()} for an instance of a {@link Module}.
+	 *
+	 * @param string $suffix A string appended to the end of the {@link Module::$id}.
+	 * @return void
+	 * @see elastic_do_atomic()
+	 * @author Daryl Koopersmith
+	 */
 	function do_atomic( $suffix = '' ) {
 		$preset_args = 1;
 		$output_args = array( $this->id . $suffix, elastic_get('module_prefix') );
@@ -85,6 +92,15 @@ class Module extends Object {
 			elastic_do_atomic( $output_args[0], $output_args[1] );
 		}
 	}
+	
+	/**
+	 * An interface to {@link elastic_do_atomic_specific()} for an instance of a {@link Module}.
+	 *
+	 * @param string $suffix A string appended to the end of the {@link Module::$id}.
+	 * @return void
+	 * @see elastic_do_atomic_specific()
+	 * @author Daryl Koopersmith
+	 */
 	function do_atomic_specific( $suffix = '' ) {
 		$preset_args = 1;
 		$output_args = array( $this->id . $suffix, elastic_get('module_prefix') );
@@ -97,6 +113,16 @@ class Module extends Object {
 			elastic_do_atomic_specific( $output_args[0], $output_args[1] );
 		}
 	}
+	
+	/**
+	 * An interface to {@link elastic_apply_atomic()} for an instance of a {@link Module}.
+	 *
+	 * @param string $suffix A string appended to the end of the {@link Module::$id}.
+	 * @param mixed $value The value to be filtered.
+	 * @return void
+	 * @see elastic_apply_atomic()
+	 * @author Daryl Koopersmith
+	 */
 	function apply_atomic( $suffix = '', $value ) {
 		$preset_args = 2;
 		$output_args = array( $this->id . $suffix, $value, elastic_get('module_prefix') );
@@ -109,6 +135,16 @@ class Module extends Object {
 			return elastic_apply_atomic( $output_args[0], $output_args[1], $output_args[2] );
 		}
 	}
+	
+	/**
+	 * An interface to {@link elastic_apply_atomic_specific()} for an instance of a {@link Module}.
+	 *
+	 * @param string $suffix A string appended to the end of the {@link Module::$id}.
+	 * @param mixed $value The value to be filtered.
+	 * @return void
+	 * @see elastic_apply_atomic_specific()
+	 * @author Daryl Koopersmith
+	 */
 	function apply_atomic_specific( $suffix = '', $value ) {
 		$preset_args = 2;
 		$output_args = array( $this->id . $suffix, $value, elastic_get('module_prefix') );
@@ -236,8 +272,9 @@ class Module extends Object {
 	}
 	
 	/**
-	 * Private. Formats the internal view hook.
+	 * Formats the internal view hook.
 	 *
+	 * @access private
 	 * @param string $view Optional. If set, returns a formatted hook. If null, returns the formatted id.
 	 * @return void
 	 * @author Daryl Koopersmith
@@ -252,8 +289,9 @@ class Module extends Object {
 	}
 	
 	/**
-	 * Private. Used in set_view to load files.
+	 * Used in {@link set_view()} to load files.
 	 *
+	 * @access private
 	 * @param string $view 
 	 * @param string $module 
 	 * @return void
@@ -266,23 +304,33 @@ class Module extends Object {
 
 	
 	/**
-	 * Private. Returns the html in which the module is wrapped.
-	 * TODO: add a hook to modify the html.
+	 * Returns the html prepended to the module.
 	 *
-	 * @return void
+	 * @access private
+	 * @todo Add a hook to modify the html.
+	 * @return string HTML prepended to module.
 	 * @author Daryl Koopersmith
 	 */
 	function _html_before() {
 		return "<div id='{$this->id}' class='" . join( ' ', array_keys( $this->classes ) ) . "'>";
 	}
-	
+
+	/**
+	 * Returns the html appended to the module.
+	 *
+	 * @access private
+	 * @todo Add a hook to modify the html.
+	 * @return string HTML appended to module.
+	 * @author Daryl Koopersmith
+	 */	
 	function _html_after() {
 		return "</div>";
 	}
 	
 	/**
-	 * Private. Blank function to be used in conjunction with both filters and actions.
+	 * Blank function to be used in conjunction with both filters and actions.
 	 *
+	 * @access private
 	 * @param string $arg 
 	 * @return string Returns the empty string only if $arg is set.
 	 * @author Daryl Koopersmith
@@ -350,8 +398,9 @@ class Module extends Object {
 	}
 	
 	/**
-	 * Private. Callback for get_module (modules by id).
+	 * Callback for get_module (modules by id).
 	 *
+	 * @access private
 	 * @param string $id 
 	 * @param string $ptr 
 	 * @return void
@@ -374,8 +423,9 @@ class Module extends Object {
 	}
 	
 	/**
-	 * Private. Callback for get_module_by_type
-	 *
+	 * Callback for get_module_by_type
+	 * 
+	 * @access private
 	 * @param string $type 
 	 * @param string $ptr 
 	 * @return void
