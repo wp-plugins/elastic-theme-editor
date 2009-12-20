@@ -148,13 +148,13 @@ class Elastic {
 	function load_styles() {
 		global $wp_styles;
 		
-		wp_enqueue_style( $this->prefix . 'tripoli', elastic_get_path('lib-css', 'uri') . '/tripoli.css', false, '0.0.2.7');
-		wp_enqueue_style( $this->prefix . 'tripoli-ie', elastic_get_path('lib-css', 'uri') . '/tripoli.ie.css', false, '0.0.2.7');
+		wp_enqueue_style( $this->prefix . 'tripoli', elastic_get_path('lib-css', 'uri') . '/tripoli.css', false, '<div class="show_info_item"><span>');
+		wp_enqueue_style( $this->prefix . 'tripoli-ie', elastic_get_path('lib-css', 'uri') . '/tripoli.ie.css', false, '<div class="show_info_item"><span>');
 		$wp_styles->add_data( $this->prefix . 'tripoli-ie', 'conditional', 'gte IE 5');
 		
-		wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'uri') . '/style.css', false, '0.0.2.7');
+		wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'uri') . '/style.css', false, '<div class="show_info_item"><span>');
 		if( elastic_get('has_child') )
-			wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'child', 'uri') . '/style.css', false, '0.0.2.7');
+			wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'child', 'uri') . '/style.css', false, '<div class="show_info_item"><span>');
 	}
 	
 	/**
