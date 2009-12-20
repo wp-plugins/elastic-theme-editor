@@ -1,16 +1,16 @@
 === Elastic Theme Editor ===
 Contributors: koopersmith
-Tags: elastic, theme, editor, framework
+Tags: elastic, theme, editor, framework, elastictheme, wysiwyg, gsoc
 Requires at least: 2.8
-Tested up to: 2.8.4
-Stable tag: 0.0.2.7
+Tested up to: 3.0-alpha
+Stable tag: 0.0.2.8
 
 An interactive theme editor for the WordPress Admin.
 
 == Description ==
 
 Elastic is an interactive theme editor for the WordPress Admin.
-Elastic is still in development: we try and keep Elastic as bug free as possible, but if you encounter any errors, let us know!
+**Elastic is still in development**: we try and keep Elastic as bug free as possible, but if you encounter any errors, let us know!
 
 = Features =
 
@@ -57,7 +57,19 @@ Using an Elastic theme is just like using any other theme:
 
 * An API to include and edit your theme inside the editor is in the works.
 
+= I'm having trouble saving a theme! Help! =
+
+* Some web hosts restrict the current method we're using to save themes. We're working on a new method that avoids those problems.
+
+= I'm having trouble running Elastic on a Windows server! =
+
+* This is a known bug, and is being worked on. Feel free to report any configuration info as well.
+
 == Changelog ==
+= 0.0.2.8 =
+* WordPress 2.9 and 3.0-alpha compatible
+* Minor API changes
+
 = 0.0.2.7 =
 * Typography panel now accurately depicts typography in theme
 * Default theme now em-based
