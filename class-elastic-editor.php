@@ -84,7 +84,7 @@ class Elastic_Editor {
 		wp_enqueue_script('elastic-lib',
 			WP_PLUGIN_URL . $plugin . '/lib.js',
 			array('jquery', 'jquery-ui-all', 'jquery-qtip', 'json'),
-			'0.0.0.28');
+			'0.0.2.9');
 
 		// Load current theme state.	
 		$state_path = trailingslashit( TEMPLATEPATH ) . 'state.php';
