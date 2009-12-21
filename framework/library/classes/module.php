@@ -1,6 +1,41 @@
 <?php
 /**
- * Module
+ * The basic unit of a theme.
+ * 
+ * Contains several APIs.
+ * 
+ * <br><b>Hooks API:</b>
+ * <ul>
+ * <li>{@link Module::format_hook()}</li>
+ * <li>{@link Module::do_atomic()}</li>
+ * <li>{@link Module::do_atomic_specific()}</li>
+ * <li>{@link Module::apply_atomic()}</li>
+ * <li>{@link Module::apply_atomic_specific()}</li>
+ * </ul>
+ * 
+ * <br><b>Classes API:</b>
+ * <ul>
+ * <li>{@link Module::add_class()}</li>
+ * <li>{@link Module::has_class()}</li>
+ * <li>{@link Module::remove_class()}</li>
+ * </ul>
+ * 
+ * <br><b>Views API:</b>
+ * <ul>
+ * <li>{@link Module::set_view()}</li>
+ * <li>{@link Module::has_view()}</li>
+ * <li>{@link Module::remove_view()}</li>
+ * <li>{@link Module::do_view()}</li>
+ * <li>{@link Module::load_views_folder()}</li>
+ * <li>{@link Module::load_default_views()}</li>
+ * </ul>
+ * 
+ * <br><b>Search API:</b>
+ * <ul>
+ * <li>{@link Module::get_module()}</li>
+ * <li>{@link Module::get_modules()}</li>
+ * <li>{@link Module::get_modules_by_type()}</li>
+ * </ul>
  * 
  * @package Elastic Framework
  * @author Daryl Koopersmith

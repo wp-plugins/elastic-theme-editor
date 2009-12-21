@@ -18,8 +18,7 @@ class Elastic_Editor {
 	}
 	
 	function get_folder() {
-		preg_match( "/[\/][^\/]*$/", dirname(__FILE__), $folder );
-		return $folder[0];
+		return basename(dirname(__FILE__));
 	}
 	
 	function process_theme() {
@@ -43,7 +42,10 @@ class Elastic_Editor {
 	}
 
 	function init_styles() {
-		$plugin = Elastic_Editor::get_folder();
+		$plugin = '/' . Elastic_Editor::get_folder();
+
+		//var_export( trailingslashit( WP_PLUGIN_URL ) . $plugin . '/styles.css' );
+		//var_export( WP_PLUGIN_URL .'/'. $plugin . '/styles.css');
 		
 		wp_enqueue_style('jquery-ui-all-styles',
 			WP_PLUGIN_URL . $plugin . '/jquery/ui/css/custom-theme/jquery-ui-1.7.2.custom.css',
@@ -62,7 +64,7 @@ class Elastic_Editor {
 	function init_scripts() {
 		global $current_user;
 		
-		$plugin = Elastic_Editor::get_folder();
+		$plugin = '/' . Elastic_Editor::get_folder();
 		
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('json',
