@@ -3,7 +3,7 @@
 class Elastic_Editor {
 	function init() {
 		// Dependencies
-		Elastic_Editor::init_json();
+		require_once(ABSPATH . WPINC . '/compat.php'); // Includes necessary JSON functions.
 		
 		require_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
 
@@ -52,7 +52,7 @@ class Elastic_Editor {
 
 		wp_enqueue_style('elastic-styles',
 			$plugin . 'styles.css',
-			'0.0.0.28',
+			'0.0.2.9',
 			'screen'
 			);
 
@@ -64,10 +64,7 @@ class Elastic_Editor {
 		$plugin = Elastic_Editor::get_folder();
 		
 		wp_enqueue_script('jquery');
-		wp_enqueue_script('json',
-			$plugin . 'json2.js',
-			false,
-			'2009-06-29');
+		wp_enqueue_script('json2');
 		wp_enqueue_script('jquery-ui-all',
 			$plugin . 'jquery/ui/js/jquery-ui-1.7.2.custom.min.js',
 			array('jquery'),
@@ -80,7 +77,7 @@ class Elastic_Editor {
 
 		wp_enqueue_script('elastic-lib',
 			$plugin . 'lib.js',
-			array('jquery', 'jquery-ui-all', 'jquery-qtip', 'json'),
+			array('jquery', 'jquery-ui-all', 'jquery-qtip', 'json2'),
 			'0.0.2.9');
 
 		// Load current theme state.	
@@ -98,28 +95,6 @@ class Elastic_Editor {
 				'user' => $user
 			));
 
-	}
-	
-	function init_json() {
-		if ( ! class_exists('Services_JSON') ) require_once('JSON.php');
-		
-		// Future-friendly json_encode
-		if( !function_exists('json_encode') ) {
-			function json_encode($data) {
-		        $json = new Services_JSON();
-		        return( $json->encode($data) );
-		    }
-		}
-
-		// Future-friendly json_decode
-		if( !function_exists('json_decode') ) 
-		{ 
-			function json_decode($data, $output_mode=false) { 
-				$param = $output_mode ? 16:null; 
-				$json = new Services_JSON($param); 
-				return( $json->decode($data) ); 
-			} 
-		}
 	}
 	
 	function list_themes() {
