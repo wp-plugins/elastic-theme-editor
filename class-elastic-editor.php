@@ -18,7 +18,7 @@ class Elastic_Editor {
 	}
 	
 	function get_folder() {
-		return basename(dirname(__FILE__));
+		return plugin_dir_url( __FILE__ );
 	}
 	
 	function process_theme() {
@@ -42,19 +42,16 @@ class Elastic_Editor {
 	}
 
 	function init_styles() {
-		$plugin = '/' . Elastic_Editor::get_folder();
-
-		//var_export( trailingslashit( WP_PLUGIN_URL ) . $plugin . '/styles.css' );
-		//var_export( WP_PLUGIN_URL .'/'. $plugin . '/styles.css');
+		$plugin = Elastic_Editor::get_folder();
 		
 		wp_enqueue_style('jquery-ui-all-styles',
-			WP_PLUGIN_URL . $plugin . '/jquery/ui/css/custom-theme/jquery-ui-1.7.2.custom.css',
+			$plugin . 'jquery/ui/css/custom-theme/jquery-ui-1.7.2.custom.css',
 			'1.7.2',
 			'screen'
 			);
 
 		wp_enqueue_style('elastic-styles',
-			WP_PLUGIN_URL . $plugin . '/styles.css',
+			$plugin . 'styles.css',
 			'0.0.0.28',
 			'screen'
 			);
@@ -64,25 +61,25 @@ class Elastic_Editor {
 	function init_scripts() {
 		global $current_user;
 		
-		$plugin = '/' . Elastic_Editor::get_folder();
+		$plugin = Elastic_Editor::get_folder();
 		
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('json',
-			WP_PLUGIN_URL . $plugin . '/json2.js',
+			$plugin . 'json2.js',
 			false,
 			'2009-06-29');
 		wp_enqueue_script('jquery-ui-all',
-			WP_PLUGIN_URL . $plugin . '/jquery/ui/js/jquery-ui-1.7.2.custom.min.js',
+			$plugin . 'jquery/ui/js/jquery-ui-1.7.2.custom.min.js',
 			array('jquery'),
 			'1.7.2');
 
 		wp_enqueue_script('jquery-qtip',
-			WP_PLUGIN_URL . $plugin . '/jquery/jquery.qtip-1.0.0-rc3.min.js',
+			$plugin . 'jquery/jquery.qtip-1.0.0-rc3.min.js',
 			array('jquery'),
 			'1.0.0-rc3');
 
 		wp_enqueue_script('elastic-lib',
-			WP_PLUGIN_URL . $plugin . '/lib.js',
+			$plugin . 'lib.js',
 			array('jquery', 'jquery-ui-all', 'jquery-qtip', 'json'),
 			'0.0.2.9');
 
