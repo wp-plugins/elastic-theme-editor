@@ -28,7 +28,8 @@ class Elastic_Editor {
 		$files = $customizer->run();
 		
 		$upgrader = new Elastic_Upgrader();
-		$upgrader->run($settings->path, trailingslashit( dirname(__FILE__) ) . 'themes/default', $files, $settings->install);
+		$plugin = dirname( plugin_dir_path( __FILE__ ) );
+		$upgrader->run($settings->path, $plugin . '/themes/default', $files, $settings->install);
 	}
 	
 	function plugin_menu() {
