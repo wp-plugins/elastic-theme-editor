@@ -16,9 +16,8 @@ class Elastic_Customizer {
 		$style = stripslashes( $_POST["style"] );
 
 		$files = array(
-			"custom/layout.php" => $this->generate_layout( $layout ),
-			"custom/style.css" => $this->generate_style( $structure, $style ),
-			"style.css" => $this->generate_settings( $settings ),
+			"layout.php" => $this->generate_layout( $layout ),
+			"style.css" => $this->generate_style( $settings, $structure, $style ),
 			"state.php" => $state
 			);
 
@@ -27,7 +26,18 @@ class Elastic_Customizer {
 	}
 	
 	/**
-	 * Dynamically generates the contents of custom/style.css
+	 * Dynamically generates the contents of style.css
+	 *
+	 * @param string $settings Theme settings
+	 * @return string A valid css file
+	 * @author Daryl Koopersmith
+	 */
+	function generate_style( $settings, $structure, $style ) {
+		return generate_settings( $settings ) . generate_css( $structure, $style );
+	}
+	
+	/**
+	 * Dynamically generates the theme settings
 	 *
 	 * @param string $settings Theme settings
 	 * @return string A valid css file
@@ -48,19 +58,19 @@ class Elastic_Customizer {
 		$out.= $settings->author_uri;
 		$out.= "\nTags: ";
 		$out.= $settings->tags;
-		$out.= "\n*/\n\n/* NOTE: THIS FILE IS ONLY USED FOR THEME INFO */";
+		$out.= "\n*/\n\n";
 		
 		return $out;
 	}
 	
 	/**
-	 * Dynamically generates the contents of custom/style.css
+	 * Dynamically generates the css
 	 *
 	 * @param string $settings Theme settings
 	 * @return string A valid css file
 	 * @author Daryl Koopersmith
 	 */
-	function generate_style( $structure, $style ) {
+	function generate_css( $structure, $style ) {
 		ob_start();
 		include("framework_style.css");
 		$out.= ob_get_clean();

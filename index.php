@@ -24,7 +24,17 @@ Author URI: http://gsoc2009wp.wordpress.com/tag/elastic/
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-require_once('class-elastic-editor.php');
+// Check for Elastic engine
+add_action('load_elastic_engine', 'start_your_engines');
+
+function start_your_engines() {
+	define('USE_EXTERNAL_ENGINE', true);
+	// Load $elastic object and functions.
+	require_once('engine/elastic.php');
+}
+
+// Load editor
+require_once('editor/class-elastic-editor.php');
 Elastic_Editor::init();
 
 ?>
