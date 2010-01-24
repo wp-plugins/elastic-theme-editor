@@ -83,7 +83,7 @@ class Elastic {
 		$this->has_child = ( STYLESHEETPATH !== TEMPLATEPATH );
 		
 		// Set paths
-		$this->path['root'] = '';
+		$this->path['engine'] = '';
 		$this->path['classes'] = 'classes';
 		$this->path['lib-css'] = 'css';
 		$this->path['fallback-views'] = 'fallback-views';
@@ -288,6 +288,7 @@ class Elastic {
 }
 
 // Make elastic object
+global $elastic;
 $elastic = new Elastic();
 $elastic->init();
 
@@ -301,10 +302,11 @@ $elastic->init();
  */
 function elastic_get($var) {
     global $elastic;
-    
+
     if( isset($elastic->$var) ) {
         return $elastic->$var;
     }
+
     return false;
 }
 
@@ -325,34 +327,23 @@ function elastic_set($var, $value) {
 
 /**
  * Returns a path within the Elastic framework.
- * Arguments specify absolute or URI, and theme or child theme.
+ * Arguments specify whether a path is absolute or a url.
  * 
- * Takes a path $name, then up to two optional arguments: ['abs' or 'uri'] and ['theme' or 'child'].
- * Defaults to 'abs' and 'theme'.
- * 
- * @param string $name The name of the path requested. A common value is 'lib-css'.
- * @param string $arg1 Optional. Takes ['abs' or 'uri'] or ['theme' or 'child']
- * @param string $arg2 Optional. Takes ['abs' or 'uri'] or ['theme' or 'child']
- * @deprecated
+ * @param string $name The name of the path requested. A common value is 'editor'.
+ * @param boolean $url Optional. Default false (absolute path). Whether the path returned is a url.
  * @return string Requested path, or false.
  * @author Daryl Koopersmith
- * 
- * 
- * @todo remove elastic_get_path because default WP paths can now be used?
  */
-function elastic_get_path( $name, $arg1 = 'abs', $arg2 = 'theme' ) {
+function elastic_get_path( $name, $url = false ) {
 	$path = elastic_get('path');
 	
 	if( ! isset($path[ $name ]) )
 		return false;
 	
-	$uri = ( 'uri' === $arg1 || 'uri' === $arg2 );
-	$child = ( 'child' === $arg1 || 'child' === $arg2 );
-	
-	if( $uri )
-		return trailingslashit( ($child) ? get_stylesheet_directory_uri() : get_template_directory_uri() ) . $path[ $name ];
+	if( $url )
+		return plugin_dir_url( __FILE__ ) . $path[ $name ];
 	else
-		return trailingslashit( ($child) ? STYLESHEETPATH : TEMPLATEPATH ) . $path[ $name ];
+		return plugin_dir_path( __FILE__ ) . $path[ $name ];
 }
 
 /**
