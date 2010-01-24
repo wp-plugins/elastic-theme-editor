@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Elastic Theme Editor
+Plugin Name: Elastic Theme Engine and Editor
 Plugin URI: http://wordpress.org/extend/plugins/elastic-theme-editor/
 Description: A theme editor for the Elastic framework.
 Version: 0.0.2.9
