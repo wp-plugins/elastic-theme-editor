@@ -1,6 +1,6 @@
 <?php
 
 // Load $elastic object and functions.
-require_once( trailingslashit( TEMPLATEPATH ) . 'library/elastic.php');
+do_action('load_elastic_engine');
 
 ?>
