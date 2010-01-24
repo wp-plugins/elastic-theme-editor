@@ -33,7 +33,7 @@ class Elastic_Customizer {
 	 * @author Daryl Koopersmith
 	 */
 	function generate_style( $settings, $structure, $style ) {
-		return generate_settings( $settings ) . generate_css( $structure, $style );
+		return $this->generate_settings( $settings ) . $this->generate_css( $structure, $style );
 	}
 	
 	/**
