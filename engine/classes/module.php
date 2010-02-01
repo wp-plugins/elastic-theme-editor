@@ -301,9 +301,9 @@ class Module extends Object {
 	 */
 	function load_default_views() {
 		$this->load_views_folder( elastic_get_path('fallback-views') );
-		$this->load_views_folder( elastic_get_path('custom') );
+		$this->load_views_folder( TEMPLATEPATH );
 		if ( elastic_get('has_child') )
-			$this->load_views_folder( elastic_get_path('custom', 'child') );
+			$this->load_views_folder( STYLESHEETPATH );
 	}
 	
 	/**

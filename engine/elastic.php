@@ -83,12 +83,10 @@ class Elastic {
 		$this->has_child = ( STYLESHEETPATH !== TEMPLATEPATH );
 		
 		// Set paths
-		$this->path['root'] = '';
-		$this->path['library'] = 'library';
-		$this->path['classes'] = trailingslashit( $this->path['library'] ) . 'classes';
-		$this->path['lib-css'] = trailingslashit( $this->path['library'] ) . 'css';
-		$this->path['fallback-views'] = trailingslashit( $this->path['library'] ) . 'fallback-views';
-		$this->path['custom'] = 'custom';
+		$this->path['engine'] = '';
+		$this->path['classes'] = 'classes';
+		$this->path['lib-css'] = 'css';
+		$this->path['fallback-views'] = 'fallback-views';
 				
 		// Load classes
 		require_once( elastic_get_path('classes') . '/object.php');
@@ -99,16 +97,6 @@ class Elastic {
 		require_once( elastic_get_path('classes') . '/header.php');
 		require_once( elastic_get_path('classes') . '/content.php');
 		
-		// Load user's functions.php
-		$functions = TEMPLATEPATH . '/custom/functions.php';
-		if( file_exists( $functions ) )
-			include $functions;
-
-		// Load child's functions.php			
-		$functions = STYLESHEETPATH . '/custom/functions.php';
-		if( $this->has_child && file_exists( $functions ) )
-			include $functions;
-		
 		// Set prefix for all hooks and ids.
 		$this->prefix = apply_filters('elastic_prefix','elastic_');
 		$this->module_prefix = apply_filters( $this->prefix . 'module_prefix','module_');
@@ -117,8 +105,17 @@ class Elastic {
 		$this->theme_data = apply_filters($this->prefix . 'theme_data', get_theme_data(TEMPLATEPATH . '/style.css') );
 		$this->child_data = apply_filters($this->prefix . 'child_data', get_theme_data(STYLESHEETPATH . '/style.css') );
 		
+		
 		// Get layout
-		require_once( elastic_get_path('custom', (elastic_get('has_child')) ? 'child' : 'theme' ) . '/layout.php');
+		// Load parent's layout.php. Required.
+		require_once( TEMPLATEPATH . '/layout.php' );
+
+		// Load child's layout.php. Optional.
+		$child_layout_file = STYLESHEETPATH . '/layout.php';
+		if( $this->has_child && file_exists( $child_layout_file ) )
+			require_once( $child_layout_file );
+		
+		// Set layout
 		$this->layout = $layout;
 		
 		// Load styles
@@ -127,13 +124,23 @@ class Elastic {
 		// Get context (once it's set)
 		add_action('template_redirect', array(&$this, 'get_context') );
 		// Get context now, for admin pages
+		/**
+		 * @todo Worth putting an is_admin() check here?
+		 **/
 		$this->context = $this->get_context();
 		
 		// Register sidebars
+		/**
+		 * @todo Can 'admin_init' section be replaced with a direct call? We've already reached 'init'
+		 **/
 		if( is_admin() ) // Sidebars must be registered during admin_init, which is before template_redirect
-			add_action('init', array(&$this, 'register_sidebars') );
+			add_action('admin_init', array(&$this, 'register_sidebars') );
 		else // Sidebars are registered on template_redirect to ensure context has loaded
 			add_action('template_redirect', array(&$this, 'register_sidebars') );
+			
+		
+		// Load theme
+		add_action('template_redirect', array(&$this, 'load_theme'), 100 );
 	}
 
 	/**
@@ -152,9 +159,9 @@ class Elastic {
 		wp_enqueue_style( $this->prefix . 'tripoli-ie', elastic_get_path('lib-css', 'uri') . '/tripoli.ie.css', false, '0.0.2.9');
 		$wp_styles->add_data( $this->prefix . 'tripoli-ie', 'conditional', 'gte IE 5');
 		
-		wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'uri') . '/style.css', false, '0.0.2.9');
+		wp_enqueue_style( $this->prefix . 'style', get_template_directory_uri() . '/style.css', false, '0.0.2.9');
 		if( elastic_get('has_child') )
-			wp_enqueue_style( $this->prefix . 'style', elastic_get_path('custom', 'child', 'uri') . '/style.css', false, '0.0.2.9');
+			wp_enqueue_style( $this->prefix . 'style', get_stylesheet_directory_uri() . '/style.css', false, '0.0.2.9');
 	}
 	
 	/**
@@ -262,9 +269,28 @@ class Elastic {
 
 		return $this->context = $context;
 	}
+	
+	/**
+	 * Loads the theme.
+	 *
+	 * @access private
+	 * @return void
+	 * @author Daryl Koopersmith
+	 */
+	function load_theme() {
+		get_header();
+
+		$elastic_layout = elastic_get('layout');
+		$elastic_layout->run();
+
+		get_footer();
+		
+		exit(); // Stop wp-includes/template-loader.php from executing.
+	}
 }
 
 // Make elastic object
+global $elastic;
 $elastic = new Elastic();
 $elastic->init();
 
@@ -278,10 +304,11 @@ $elastic->init();
  */
 function elastic_get($var) {
     global $elastic;
-    
+
     if( isset($elastic->$var) ) {
         return $elastic->$var;
     }
+
     return false;
 }
 
@@ -302,30 +329,23 @@ function elastic_set($var, $value) {
 
 /**
  * Returns a path within the Elastic framework.
- * Arguments specify absolute or URI, and theme or child theme.
+ * Arguments specify whether a path is absolute or a url.
  * 
- * Takes a path $name, then up to two optional arguments: ['abs' or 'uri'] and ['theme' or 'child'].
- * Defaults to 'abs' and 'theme'.
- * 
- * @param string $name The name of the path requested. A common value is 'custom'.
- * @param string $arg1 Optional. Takes ['abs' or 'uri'] or ['theme' or 'child']
- * @param string $arg2 Optional. Takes ['abs' or 'uri'] or ['theme' or 'child']
+ * @param string $name The name of the path requested. A common value is 'editor'.
+ * @param boolean $url Optional. Default false (absolute path). Whether the path returned is a url.
  * @return string Requested path, or false.
  * @author Daryl Koopersmith
  */
-function elastic_get_path( $name, $arg1 = 'abs', $arg2 = 'theme' ) {
+function elastic_get_path( $name, $url = false ) {
 	$path = elastic_get('path');
 	
 	if( ! isset($path[ $name ]) )
 		return false;
 	
-	$uri = ( 'uri' === $arg1 || 'uri' === $arg2 );
-	$child = ( 'child' === $arg1 || 'child' === $arg2 );
-	
-	if( $uri )
-		return trailingslashit( ($child) ? get_stylesheet_directory_uri() : get_template_directory_uri() ) . $path[ $name ];
+	if( $url )
+		return plugin_dir_url( __FILE__ ) . $path[ $name ];
 	else
-		return trailingslashit( ($child) ? STYLESHEETPATH : TEMPLATEPATH ) . $path[ $name ];
+		return plugin_dir_path( __FILE__ ) . $path[ $name ];
 }
 
 /**
