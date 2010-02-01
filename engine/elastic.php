@@ -140,7 +140,7 @@ class Elastic {
 			
 		
 		// Load theme
-		add_filter('load_external_engine', array(&$this, 'load_theme') );
+		add_action('template_redirect', array(&$this, 'load_theme'), 100 );
 	}
 
 	/**
@@ -284,6 +284,8 @@ class Elastic {
 		$elastic_layout->run();
 
 		get_footer();
+		
+		exit(); // Stop wp-includes/template-loader.php from executing.
 	}
 }
 

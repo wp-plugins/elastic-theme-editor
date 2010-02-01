@@ -28,7 +28,6 @@ Author URI: http://gsoc2009wp.wordpress.com/tag/elastic/
 add_action('load_elastic_engine', 'start_your_engines');
 
 function start_your_engines() {
-	define('USE_EXTERNAL_ENGINE', true);
 	// Load $elastic object and functions.
 	require_once('engine/elastic.php');
 }
