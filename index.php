@@ -3,7 +3,7 @@
 Plugin Name: Elastic Theme Engine and Editor
 Plugin URI: http://wordpress.org/extend/plugins/elastic-theme-editor/
 Description: A theme editor for the Elastic framework.
-Version: 0.0.2.9
+Version: 0.0.3.0
 Author: Daryl Koopersmith
 Author URI: http://gsoc2009wp.wordpress.com/tag/elastic/
 

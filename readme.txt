@@ -1,26 +1,31 @@
 === Elastic Theme Editor ===
 Contributors: koopersmith
-Tags: elastic, theme, editor, framework, elastictheme, wysiwyg, gsoc
-Requires at least: 2.8
+Tags: elastic, theme, editor, engine, framework, elastictheme, wysiwyg, gsoc
+Requires at least: 2.9
 Tested up to: 3.0-alpha
-Stable tag: 0.0.2.9
+Stable tag: 0.0.3.0
 
-An interactive theme editor for the WordPress Admin.
+A interactive theme editor and theme engine for WordPress.
 
 == Description ==
 
-Elastic is an interactive theme editor for the WordPress Admin.
+Elastic is a theme engine and interactive theme editor for WordPress.
 
-**Elastic is still in development**: we try and keep Elastic as bug free as possible, but if you encounter any errors, let us know!
+= IMPORTANT =
+**Elastic is still in development and we do not recommend that you use Elastic themes on live websites.** We try and keep Elastic as bug free as possible, but if you encounter any errors, let us know!
 
-= Features =
+Developers, please note that Elastic has an evolving API that is *not backwards compatible* with previous versions.
+
+= Features For Users =
 
 * **Infinite theme arrangements:** Drag-and-drop makes themes easy to customize.
 * **Custom fonts:** Preview your selections with the detailed typography editor.
 * **Grid-based** for easy organization. **Custom grids** for flexibility.
 * **Portable:** Share your themes with anyone! Elastic creates a standard WordPress theme.
-* **Theme Framework:** For theme developers, the editor is just the beginning—Elastic themes are based on the powerful Elastic theme framework.
 * *Many more coming soon!*
+
+= Features For Developers =
+* **Theme Engine:** For theme developers, the editor is just the beginning—Elastic themes are based on the powerful Elastic theme engine.
 
 == Installation ==
 
@@ -50,7 +55,33 @@ Using an Elastic theme is just like using any other theme:
 
 * On the 'Themes' page, click the 'Delete' link next to your theme.
 
-= How do I adapt my theme to the Elastic framework? =
+= I'm having trouble saving a theme! Help! =
+
+* Some web hosts restrict the current method we're using to save themes. We're working on a new method that avoids those problems, but in the meantime please let us know if you have a problem!
+
+= I'm a developer! I have questions! What's a theme engine? =
+
+* Please see the "Developer F.A.Q." page.
+
+
+== Developer F.A.Q. ==
+
+= IMPORTANT =
+**Elastic is still in development and we do not recommend that you use Elastic themes on live websites.** We try and keep Elastic as bug free as possible, but if you encounter any errors, let us know!
+
+Please note that Elastic has an evolving API that is *not backwards compatible* with previous versions.
+
+= What's a theme engine? =
+
+* A theme engine is the system through which a WordPress page is loaded.
+* The default theme engine consists of the [template heirarchy](http://codex.wordpress.org/Template_Hierarchy "Default WordPress template hierarchy"), header.php, footer.php, comments.php, and more. The Elastic theme engine is **very similar to the default WordPress theme engine**, with the major exception that templates are based on modules instead of pages.
+
+= What are the goals of the Elastic theme engine? =
+
+* **Write less code.** The Elastic theme engine is more flexible and concise than the WordPress theme engine. The Elastic engine is focused on eliminating code repetition within themes and providing useful tools for theme developers.
+* **Easy to learn, easy to use.** The Elastic theme engine is designed to make writing and adapting WP themes simple. Adapting a theme is mostly cut and paste.
+
+= How do I adapt my theme to the Elastic engine? =
 
 * Tutorial coming soon!
 
@@ -58,15 +89,17 @@ Using an Elastic theme is just like using any other theme:
 
 * An API to include and edit your theme inside the editor is in the works.
 
-= I'm having trouble saving a theme! Help! =
-
-* Some web hosts restrict the current method we're using to save themes. We're working on a new method that avoids those problems.
-
-= I'm having trouble running Elastic on a Windows server! =
-
-* This is a known bug, and is being worked on. Feel free to report any configuration info as well.
 
 == Changelog ==
+= 0.0.3.0 =
+* Elastic now divided into engine, editor, and themes
+* Theme file structure rewritten
+ * `/library` now known as `/engine`, no longer part of themes
+ * `/custom` merged with `/framework` directory, now known as `/themes/default`
+* Bug fixes
+ * Fixed JSON bug
+ * Fixed path bug that caused problems with Windows Server
+
 = 0.0.2.9 =
 * Small fixes to version compatibility
 * Fixed JavaScript loading error
