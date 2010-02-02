@@ -3,7 +3,7 @@ Contributors: koopersmith
 Tags: elastic, theme, editor, engine, framework, elastictheme, wysiwyg, gsoc
 Requires at least: 2.9
 Tested up to: 3.0-alpha
-Stable tag: 0.0.3.0
+Stable tag: 0.0.2.9
 
 A interactive theme editor and theme engine for WordPress.
 
