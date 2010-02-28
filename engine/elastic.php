@@ -73,6 +73,13 @@ class Elastic {
 	var $path = array();
 	
 	/**
+	 * Determines whether to include a CSS reset file. Default false.
+	 *
+	 * @var boolean
+	 */
+	var $include_css_reset = false;
+	
+	/**
 	 * Initializes and sets hooks for the Elastic framework
 	 *
 	 * @access private
@@ -155,13 +162,17 @@ class Elastic {
 	function load_styles() {
 		global $wp_styles;
 		
-		wp_enqueue_style( $this->prefix . 'tripoli', elastic_get_path('lib-css', 'uri') . '/tripoli.css', false, '0.0.2.9');
-		wp_enqueue_style( $this->prefix . 'tripoli-ie', elastic_get_path('lib-css', 'uri') . '/tripoli.ie.css', false, '0.0.2.9');
-		$wp_styles->add_data( $this->prefix . 'tripoli-ie', 'conditional', 'gte IE 5');
+		if( elastic_get('include_css_reset') ) {
+			wp_enqueue_style( $this->prefix . 'tripoli', elastic_get_path('lib-css', 'uri') . '/tripoli.css', false, '0.0.3');
+			wp_enqueue_style( $this->prefix . 'tripoli-ie', elastic_get_path('lib-css', 'uri') . '/tripoli.ie.css', false, '0.0.3');
+			$wp_styles->add_data( $this->prefix . 'tripoli-ie', 'conditional', 'gte IE 5');
+		}
 		
-		wp_enqueue_style( $this->prefix . 'style', get_template_directory_uri() . '/style.css', false, '0.0.2.9');
+		$stylesheet_deps = apply_filters( $this->prefix . 'stylesheet_deps', false);
+		
+		wp_enqueue_style( $this->prefix . 'style', get_template_directory_uri() . '/style.css', $stylesheet_deps, '0.0.3');
 		if( elastic_get('has_child') )
-			wp_enqueue_style( $this->prefix . 'style', get_stylesheet_directory_uri() . '/style.css', false, '0.0.2.9');
+			wp_enqueue_style( $this->prefix . 'style', get_stylesheet_directory_uri() . '/style.css', $stylesheet_deps, '0.0.3');
 	}
 	
 	/**

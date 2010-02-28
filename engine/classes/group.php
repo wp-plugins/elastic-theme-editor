@@ -35,6 +35,8 @@ class Group extends Module {
 	 *
 	 * @return void
 	 * @author Daryl Koopersmith
+	 * 
+	 * @todo Modify set_view so groups can be disabled
 	 */
 	function set_view() {}
 	
@@ -44,6 +46,8 @@ class Group extends Module {
 	 *
 	 * @return void
 	 * @author Daryl Koopersmith
+	 * 
+	 * @todo Re-introduce remove view--how can a group be disabled?
 	 */
 	function remove_view() {}
 }
