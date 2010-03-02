@@ -72,9 +72,9 @@ class Elastic_Editor {
 			'1.7.2');
 
 		wp_enqueue_script('jquery-qtip',
-			$plugin . 'jquery/jquery.qtip-1.0.0-rc3.min.js',
+			$plugin . 'jquery/jquery.qtip-1.0.min.js',
 			array('jquery'),
-			'1.0.0-rc3');
+			'1.0-r27');
 
 		wp_enqueue_script('elastic-lib',
 			$plugin . 'lib.js',
