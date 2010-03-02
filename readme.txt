@@ -3,7 +3,7 @@ Contributors: koopersmith
 Tags: elastic, theme, editor, engine, framework, elastictheme, wysiwyg, gsoc
 Requires at least: 2.9
 Tested up to: 3.0-alpha
-Stable tag: 0.0.2.9
+Stable tag: 0.0.3.0
 
 A interactive theme editor and theme engine for WordPress.
 
@@ -73,7 +73,7 @@ Please note that Elastic has an evolving API that is *not backwards compatible* 
 
 = What's a theme engine? =
 
-* A theme engine is the system through which a WordPress page is loaded.
+* A theme engine is a theme or plugin that changes the way WordPress renders themes. The difference is that the theme engine controls how the page is loaded, not how it looks.
 * The default theme engine consists of the [template heirarchy](http://codex.wordpress.org/Template_Hierarchy "Default WordPress template hierarchy"), header.php, footer.php, comments.php, and more. The Elastic theme engine is **very similar to the default WordPress theme engine**, with the major exception that templates are based on modules instead of pages.
 
 = What are the goals of the Elastic theme engine? =
