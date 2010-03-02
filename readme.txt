@@ -3,7 +3,7 @@ Contributors: koopersmith
 Tags: elastic, theme, editor, engine, framework, elastictheme, wysiwyg, gsoc
 Requires at least: 2.9
 Tested up to: 3.0-alpha
-Stable tag: 0.0.3.0
+Stable tag: 0.0.3
 
 A interactive theme editor and theme engine for WordPress.
 
@@ -91,7 +91,7 @@ Please note that Elastic has an evolving API that is *not backwards compatible* 
 
 
 == Changelog ==
-= 0.0.3.0 =
+= 0.0.3 =
 * Elastic now divided into engine, editor, and themes
 * Theme file structure rewritten
  * `/library` now known as `/engine`, no longer part of themes

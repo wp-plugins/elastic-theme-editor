@@ -53,7 +53,7 @@ class Elastic_Editor {
 
 		wp_enqueue_style('elastic-styles',
 			$plugin . 'styles.css',
-			'0.0.3.0',
+			'0.0.3',
 			'screen'
 			);
 
@@ -79,7 +79,7 @@ class Elastic_Editor {
 		wp_enqueue_script('elastic-lib',
 			$plugin . 'lib.js',
 			array('jquery', 'jquery-ui-all', 'jquery-qtip', 'json2'),
-			'0.0.3.0');
+			'0.0.3');
 
 		// Load current theme state.	
 		$state_path = trailingslashit( TEMPLATEPATH ) . 'state.php';
