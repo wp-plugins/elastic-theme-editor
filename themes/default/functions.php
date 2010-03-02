@@ -14,6 +14,6 @@ function elastic_install_message() {
 };
 
 // Include Elastic CSS reset
-elastic_set('include_elastic_reset', true);
+elastic_set('include_css_reset', true);
 
 ?>
